@@ -79,7 +79,8 @@ class Userusecase {
                     status:200,
                     success:true,
                     message:'valid user',
-                    data:userdata?.data
+                    data:userdata?.data,
+                    token:token
                 }
             }else{
                 return{

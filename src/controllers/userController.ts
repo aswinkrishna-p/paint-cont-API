@@ -27,6 +27,19 @@ class userController {
         // console.log('inside controller',req.body);
 
         const user = await this.userUseCase.login(req.body)
+
+        const expirationDate = new Date()
+        expirationDate.setHours(expirationDate.getHours() +1)
+
+        if(user?.success){
+          res.cookie('user_token',user.token || '',{
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            expires: expirationDate,
+            
+          })
+        }
         res.status(200).json(user) 
       } catch (error) {
         console.log(error);
