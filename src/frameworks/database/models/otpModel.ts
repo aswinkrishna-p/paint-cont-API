@@ -3,7 +3,7 @@ import { Iotp } from "../../../entity/otp";
 import mongoose, {Schema} from "mongoose";
 
 
-const OtpSchema:Schema<Iotp> = new mongoose.Schema({
+const OtpSchema:Schema = new mongoose.Schema({
     email:String,
     otp:{
         required:true,
@@ -22,5 +22,5 @@ const OtpSchema:Schema<Iotp> = new mongoose.Schema({
     }
 })
 
-const OTP = mongoose.model<Iotp>('OTP',OtpSchema)
-export default OTP
+const OTPModel = mongoose.model<Iotp>('OTP',OtpSchema)
+export default OTPModel

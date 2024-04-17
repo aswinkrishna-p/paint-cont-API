@@ -1,9 +1,9 @@
 import { Iuser } from "../../../entity/userEntity";
 
-import mongoose,{Schema, Model} from "mongoose";
+import mongoose,{Schema} from "mongoose";
 
 
-const userSchema:Schema<Iuser> = new mongoose.Schema({
+const userSchema:Schema = new mongoose.Schema({
     username:{
         type:String,
         required:[true,'please enter valid name'],
@@ -26,5 +26,5 @@ const userSchema:Schema<Iuser> = new mongoose.Schema({
 
 
 
-const userModel:Model<Iuser> = mongoose.model('User',userSchema)
+const userModel = mongoose.model<Iuser>('User',userSchema)
 export default userModel
