@@ -20,6 +20,8 @@ class AdminUseCase {
             if(admin){
                 const passcheck = await bycrypt.comparePass(password , admin.password)
 
+                admin.password = ''
+
                 if(passcheck){
                     const token = await JWT.createToken(admin.username,'admin')
                     return {
