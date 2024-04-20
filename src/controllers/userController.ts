@@ -48,6 +48,23 @@ class userController {
 
         
     }
+
+    async logout(req:Req,res:Res){
+      try {
+        res.clearCookie('user_token')
+        res.status(200).json({
+          success:true,
+          message:'logout successful'
+        })
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({
+          success:false,
+          message:'error in logout'
+        })
+        
+      }
+    }
 }
 
 

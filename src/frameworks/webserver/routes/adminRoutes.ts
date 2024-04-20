@@ -14,5 +14,6 @@ const controller = new AdminController(useCase)
 const router = express.Router()
 
 router.post('/adminlogin',(req ,res) => controller.adminLogin(req, res))
+router.post('/logout',(req ,res) => controller.adminLogout(req, res))
 
 export default router

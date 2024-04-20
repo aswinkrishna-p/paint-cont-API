@@ -48,7 +48,26 @@ class AdminController {
             }
         } catch (error) {
             console.log(error);
-            
+            res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+            });
+        }
+    }
+
+    async adminLogout (req:Req, res:Res){
+        try {
+            res.clearCookie('admin_token')
+            res.status(200).json({
+                success:true,
+                message:'logout successful'
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                success: false,
+                message: "Error in logout",
+            });
         }
     }
 }
