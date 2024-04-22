@@ -1,8 +1,7 @@
-import IUserRepository from "../../../useCase/interface/repositoryintrface/userRepository";
 import { Iuser } from "../../../entity/userEntity"
 import userModel from "../models/userModel";
 
-class userRepository implements IUserRepository{
+class userRepository{
     async saveuser(user:Iuser){
         const newUser = new userModel(user)
        await newUser.save()

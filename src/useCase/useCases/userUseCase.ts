@@ -1,5 +1,5 @@
 import { Iuser } from "../../entity/userEntity";
-import IUserRepository from "../interface/repositoryintrface/userRepository";
+import userRepository from "../../frameworks/database/repository/user-repository";
 import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
 
@@ -9,10 +9,10 @@ const JWT = new jWTService()
 
 class Userusecase {
 
-    private userRepository: IUserRepository;
+    private userRepository: userRepository
 
     constructor(
-        userRepository:IUserRepository,
+        userRepository:userRepository,
        
     ) {
         this.userRepository = userRepository

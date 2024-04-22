@@ -1,15 +1,14 @@
 import { Iotp } from "../../../entity/otp";
-import { IOtpRepository } from "../../../useCase/interface/repositoryintrface/otpRepository";
 import otpModel from "../models/otpModel"
 
 
 
 
 
-export class OtpRepository implements IOtpRepository{
+export class OtpRepository {
     
     // save otp
-    async saveOtp(newUser: Iotp): Promise<Iotp> {
+    async saveOtp(newUser: Iotp) {
         try {
             const result = await otpModel.create(newUser)
             return result
@@ -19,7 +18,7 @@ export class OtpRepository implements IOtpRepository{
     }
 
     //  find user in otp model
-     async findUser(email: string): Promise<Iotp | null> {
+     async findUser(email: string){
         try {
             let result = await  otpModel.findOne({email})
             return result
@@ -30,7 +29,7 @@ export class OtpRepository implements IOtpRepository{
 
     //  find and delete user
 
-    async findAndDelete(email: string, verificationCode: string): Promise<boolean> {
+    async findAndDelete(email: string, verificationCode: string){
         try {
             const result =  await otpModel.findOneAndDelete({email,otp:verificationCode})
             if(result){

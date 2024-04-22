@@ -3,5 +3,5 @@ export interface Iuser {
     username:string,
     email:string,
     password:string,
-    status?:boolean,
+    isBlocked?:boolean,
 }
