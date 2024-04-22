@@ -1,15 +1,16 @@
+import AdminRepository from "../../frameworks/database/repository/admin-repository"
 import { Encrypted } from "../../frameworks/services/hashPassword"
 import jWTService from "../../frameworks/services/jwtService"
-import IadminRepository from "../interface/repositoryintrface/adminRepository"
+
 
 
 const bycrypt = new Encrypted
 const JWT = new jWTService
 
 class AdminUseCase {
-    private adminrepository :IadminRepository
+    private adminrepository :AdminRepository
 
-    constructor(adminrepository:IadminRepository){
+    constructor(adminrepository:AdminRepository){
         this.adminrepository = adminrepository
     }
 
@@ -46,6 +47,36 @@ class AdminUseCase {
             
         }
 
+    }
+
+    async Users(){
+        try {
+            const users = await this.adminrepository.getAllUsers()
+            if(users){
+                return{
+                    success:true,
+                    data:users
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'users data not found'
+                }
+            }
+        } catch (error) {
+          console.log(error);
+            
+        }
+    }
+
+    async changeUserStatus(userId:string){
+        try {
+            const blockuser = await this.adminrepository.changestatus(userId)
+            return blockuser
+        } catch (error) {
+            console.log(error);
+            
+        }
     }
 }
 export default AdminUseCase

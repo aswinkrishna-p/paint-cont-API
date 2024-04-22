@@ -70,6 +70,47 @@ class AdminController {
             });
         }
     }
+
+    async getUsers (req:Req,res:Res){
+        try {
+            const users = await this.AdminUseCase.Users()
+            res.status(200).json({users})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                success:false,
+                message:(error as Error)?.message
+            })
+            
+        }
+    }
+
+    async blockUser(req:Req ,res:Res){
+        try {
+            const userId = req.params.id
+            if(!userId){
+                return res.status(400).json({success:false,message:'invalid user id '})
+            }
+
+            const blockuser = await this.AdminUseCase.changeUserStatus(userId)
+            if(blockuser?.success){
+                return res.status(200).json({
+                    success:true,
+                    user:blockuser.user,
+                    message:blockuser.message
+                })
+            }else{
+                return res.status(400).json({
+                    success:false,
+                    message:blockuser?.message
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ success: false, message: (error as Error).message });
+            
+        }
+    }
 }
 
 export default AdminController
