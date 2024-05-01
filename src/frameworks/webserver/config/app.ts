@@ -4,6 +4,7 @@ import cors from 'cors'
 
 import userRouter from '../routes/userRoutes'
 import adminRouter from '../routes/adminRoutes'
+import painterRouter from '../routes/painterRoutes'
 import cookieParser from "cookie-parser";
 
 const app : Express = express()
@@ -23,4 +24,5 @@ app.use(cors({
 // Routes
 app.use('/user',userRouter)
 app.use('/admin',adminRouter)
+app.use('/painter',painterRouter)
 export default app
