@@ -3,108 +3,94 @@ import painterRepository from "../../frameworks/database/repository/painter-repo
 import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
 
-
-const bcrypt = new Encrypted()
-const JWT = new jWTService()
-
+const bcrypt = new Encrypted();
+const JWT = new jWTService();
 
 class PainterUseCase {
-    private userRepository: painterRepository
+  private painterRepository: painterRepository;
 
-    constructor(
-        userRepository:painterRepository,
-       
-    ) {
-        this.userRepository = userRepository
-        
+  constructor(painterRepository: painterRepository) {
+    this.painterRepository = painterRepository;
+  }
+
+  async Register(painter: Ipainter) {
+    const checkemail = await this.painterRepository.findByEmail(painter.email);
+
+    if (checkemail) {
+      return {
+        status: 400,
+        message: "User already exists",
+      };
+    } else {
+      const newPassword = await bcrypt.hashpass(painter.password);
+      painter.password = newPassword;
+
+      const Rdata = await this.painterRepository.saveuser(painter);
+      return {
+        status: 200,
+        message: Rdata.message,
+        data: Rdata.data,
+      };
     }
+  }
 
-    async Register(user:Ipainter){
+  async login(painter: Ipainter) {
+    console.log("inside login");
+    try {
+      const userdata = await this.painterRepository.findByEmail(painter.email);
 
-        const checkemail = await this.userRepository.findByEmail(user.email)
-
-        if(checkemail){
-            return {
-                status: 400,
-                message: 'User already exists',
-            }
-        }
-        else{
-            const newPassword = await bcrypt.hashpass(user.password)
-            user.password = newPassword
-
-            const Rdata = await this.userRepository.saveuser(user)
-            return {
-                status:200,
-                message: Rdata.message,
-                data: Rdata.data,
-            }
+      if (!userdata) {
+        return {
+          success: false,
+          message: "user not found",
+        };
+      } else {
+        if (!userdata.status) {
+          return {
+            success: false,
+            message: "user blocked by admin",
+          };
         }
 
+        const validpass = await bcrypt.comparePass(
+          painter.password,
+          userdata.data.password
+        );
+
+        userdata.data.password = "";
+
+        if (validpass) {
+          const token = await JWT.createToken(
+            userdata.data._id as string,
+            "painter"
+          );
+          // console.log(token,'token indakiii');
+
+          if (token) {
+            return {
+              status: 200,
+              success: true,
+              message: "valid user",
+              data: userdata?.data,
+              token: token,
+            };
+          } else {
+            return {
+              success: false,
+              message: "error in token generation",
+            };
+          }
+        } else {
+          return {
+            success: false,
+            message: "Invalid Credentials",
+          };
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
-
-
-    async login(user:Ipainter){
-
-        console.log('inside login');
-        try {
-            const userdata = await this.userRepository.findByEmail(user.email)
-
-        if(!userdata){
-            return {
-                success:false,
-                message:'user not found'
-            }
-        }else{
-
-            if(!userdata.status){
-                return{
-                    success:false,
-                    message:'user blocked by admin'
-                }
-            }
-        
-
-        const validpass = await bcrypt.comparePass(user.password ,userdata.data.password)
-
-        userdata.data.password = ''
-
-
-        if(validpass){
-            const token = await JWT.createToken(userdata.data._id as string ,"user")
-            // console.log(token,'token indakiii');
-            
-            if(token){
-                return{
-                    status:200,
-                    success:true,
-                    message:'valid user',
-                    data:userdata?.data,
-                    token:token
-                }
-            }else{
-                return{
-                    success:false,
-                    message:'error in token generation'
-                }
-            }
-        }else{
-            return{
-                success:false,
-                message:'Invalid Credentials'
-            }
-        }
-        }
-
-        } catch (error) {
-            console.log(error);
-            
-        }
- 
-        
-    }
+  }
 }
 
-
-
-export default PainterUseCase
+export default PainterUseCase;

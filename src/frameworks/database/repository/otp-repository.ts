@@ -5,7 +5,8 @@ import otpModel from "../models/otpModel"
 
 
 
-export class OtpRepository {
+ class OtpRepository {
+
     
     // save otp
     async saveOtp(newUser: Iotp) {
@@ -42,3 +43,5 @@ export class OtpRepository {
         }
     }
 }
+
+export default OtpRepository

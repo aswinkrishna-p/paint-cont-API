@@ -4,7 +4,9 @@ import mongoose, {Schema} from "mongoose";
 
 
 const OtpSchema:Schema = new mongoose.Schema({
-    email:String,
+    email:{
+      type:String,
+    },
     otp:{
         required:true,
         type:String     

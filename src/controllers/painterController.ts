@@ -7,9 +7,10 @@ import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/midd
 
 class PainterController {
     
-    private userUseCase : PainterUseCase
-    constructor(userUseCase:PainterUseCase){
-        this.userUseCase = userUseCase
+    private painterUseCase : PainterUseCase
+    private otpusecase : otp
+    constructor(painterUseCase:PainterUseCase){
+        this.painterUseCase = painterUseCase
     }
 
     async register(req: Req ,res:Res){
@@ -36,8 +37,8 @@ class PainterController {
               return res.status(400).json({ success: false, message: "Password must be at least 6 characters long" });
           }
 
-            const  user = await this.userUseCase.Register(req.body)
-            res.status(user.status).json(user)
+            // const  user = await this.painterUseCase.Register(req.body)
+            // res.status(user.status).json(user)`12
         } catch (error) {
             console.log(error);
             
@@ -65,13 +66,13 @@ class PainterController {
                 .json({ success: false, message: "Invalid password" });
         }
 
-        const user = await this.userUseCase.login(req.body)
+        const user = await this.painterUseCase.login(req.body)
 
         const expirationDate = new Date()
         expirationDate.setHours(expirationDate.getHours() +1)
 
         if(user?.success){
-          res.cookie('user_token',user.token || '',{
+          res.cookie('painter_token',user.token || '',{
             httpOnly: true,
             secure: true,
             sameSite: "none",
@@ -90,7 +91,7 @@ class PainterController {
 
     async logout(req:Req,res:Res){
       try {
-        res.clearCookie('user_token')
+        res.clearCookie('painter_token')
         res.status(200).json({
           success:true,
           message:'logout successful'
