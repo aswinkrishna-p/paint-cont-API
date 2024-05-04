@@ -63,8 +63,9 @@ export const verifyEmail = async (email: string ,otp:string) => {
 
         //send OTP as Email
         const sendOtp = await sendEmail(email, mailSubject, message)
-        // console.log('emailService', sendOtp)
+        console.log('emailService', sendOtp)
         return {
+            success:true,
             status: sendOtp.status,
             message: sendOtp.message
         }
