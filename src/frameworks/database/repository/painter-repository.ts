@@ -1,11 +1,12 @@
 import { Ipainter } from "../../../entity/painterEntity";
 import painterModel from "../models/painterModel";
-
+import { Document, Types } from "mongoose";
+import { Iotp } from "../../../entity/otp";
 
 
 
 class painterRepository {
-    async saveuser(user:Ipainter){
+    async saveuser(user:| Ipainter  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
         const newUser = new painterModel(user)
        await newUser.save()
        newUser.password=''

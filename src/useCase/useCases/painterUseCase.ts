@@ -1,7 +1,9 @@
+import { Iotp } from "../../entity/otp";
 import { Ipainter } from "../../entity/painterEntity";
 import painterRepository from "../../frameworks/database/repository/painter-repository";
 import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
+import { Document, ObjectId, Schema, Types } from "mongoose";
 
 const bcrypt = new Encrypted();
 const JWT = new jWTService();
@@ -13,25 +15,15 @@ class PainterUseCase {
     this.painterRepository = painterRepository;
   }
 
-  async Register(painter: Ipainter) {
-    const checkemail = await this.painterRepository.findByEmail(painter.email);
-
-    if (checkemail) {
-      return {
-        status: 400,
-        message: "User already exists",
-      };
-    } else {
-      const newPassword = await bcrypt.hashpass(painter.password);
-      painter.password = newPassword;
-
+  async Register(painter:| Ipainter  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined ) {
+  
       const Rdata = await this.painterRepository.saveuser(painter);
       return {
         status: 200,
         message: Rdata.message,
         data: Rdata.data,
       };
-    }
+    
   }
 
   async login(painter: Ipainter) {

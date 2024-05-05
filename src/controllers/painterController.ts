@@ -1,6 +1,7 @@
 import { Next, Req, Res } from "../frameworks/types/serverPackageTypes";
 import PainterUseCase from "../useCase/useCases/painterUseCase";
 import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/middlewares/validations";
+import OtpUsecases from "../useCase/useCases/OtpUseCase";
 
 
 
@@ -8,18 +9,21 @@ import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/midd
 class PainterController {
     
     private painterUseCase : PainterUseCase
-    private otpusecase : otp
-    constructor(painterUseCase:PainterUseCase){
+    private otpusecase : OtpUsecases
+    constructor(painterUseCase:PainterUseCase ,otpusecase:OtpUsecases){
         this.painterUseCase = painterUseCase
+        this.otpusecase = otpusecase
     }
 
     async register(req: Req ,res:Res){
         try {
-            // console.log(req.body);
+            console.log(req.body);
 
-            const username = req.body.username.trim()
-            const email = req.body.email.trim()
-            const password = req.body.password.trim()
+            let {username,email,password} = req.body
+
+             username = username.trim()
+             email = email.trim()
+             password = password.trim()
 
             if(!username || !email || !password){
               return res.status(400).json({ success: false, message: "Missing required fields" });
@@ -39,10 +43,42 @@ class PainterController {
 
             // const  user = await this.painterUseCase.Register(req.body)
             // res.status(user.status).json(user)`12
+            const otpsend = await this.otpusecase.SendOtp(req.body)
+            res.status(200).json({
+              success: true,
+              message: "OTP sent successfully",
+          });
         } catch (error) {
             console.log(error);
             
         }
+    }
+
+    async otpVerification(req:Req,res:Res){
+      try {
+        console.log('inside the otp verification');
+        
+        let {email , otp} = req.body
+        // email.trim()
+        // otp.trim()
+
+        if(!isValidEmail(email)){
+          return res
+          .status(200)
+          .json({ success: false, message: "Invalid email format" });
+        }
+
+        const verify = await this.otpusecase.verifyOTP(email,otp)
+
+        if(!verify?.success){
+          return res.status(400).json({success:false,message: verify?.message})
+      }else{
+        const save = await this.painterUseCase.Register(verify.verify?.result)
+      }
+      } catch (error) {
+        console.log(error);
+        
+      }
     }
 
     async login(req:Req,res:Res){

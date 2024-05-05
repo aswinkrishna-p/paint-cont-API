@@ -1,9 +1,11 @@
+import { Iotp } from "../../entity/otp";
 import OtpRepository from "../../frameworks/database/repository/otp-repository";
 import { verifyEmail } from "../../frameworks/services/emailService";
 import generateOTP from "../../frameworks/services/otpService";
+import { Encrypted } from "../../frameworks/services/hashPassword";
 
 
-
+const bcrypt = new Encrypted();
 
 class OtpUsecases {
     private otpRepository:OtpRepository
@@ -12,13 +14,15 @@ class OtpUsecases {
     }
 
 
-    async SendOtp(email:string){
+    async SendOtp(user:Iotp){
         try {
+            const newPassword = await bcrypt.hashpass(user.password);
+            user.password = newPassword;
             const otp = await generateOTP(4)
-            const otpsend = await verifyEmail(email,otp)
-            const userdata = {email,otp}
+            const otpsend = await verifyEmail(user.email,otp)
+            user.otp = otp
             if(otpsend.success){
-                const saveotp = await this.otpRepository.saveOtp(userdata)
+                const saveotp = await this.otpRepository.saveOtp(user)
             }
         } catch (error) {
             console.log(error);
