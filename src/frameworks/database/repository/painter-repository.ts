@@ -7,7 +7,13 @@ import { Iotp } from "../../../entity/otp";
 
 class painterRepository {
     async saveuser(user:| Ipainter  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
-        const newUser = new painterModel(user)
+
+         const data ={
+            username:user?.username,
+            email:user?.email,
+            password:user?.password
+         }
+        const newUser = new painterModel(data)
        await newUser.save()
        newUser.password=''
         return {

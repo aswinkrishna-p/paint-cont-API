@@ -34,7 +34,8 @@ class OtpUsecases {
     async verifyOTP(email:string,otp:string){
         try {
             const verify = await this.otpRepository.findUser(email)
-
+            console.log(verify,'verify data in otpusecase');
+            
             if(verify.success){
                 if(verify.result?.otp === otp){
                     return{

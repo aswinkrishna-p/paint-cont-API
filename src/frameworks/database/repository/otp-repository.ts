@@ -14,6 +14,8 @@ import otpModel from "../models/otpModel"
             await otpModel.findOneAndDelete({email:newUser.email})
             const newuser = new otpModel(newUser)
             const result = await newuser.save()
+            console.log(result,'result in otp repoo');
+            
             return result
         } catch (error:any) {
             throw(error)
