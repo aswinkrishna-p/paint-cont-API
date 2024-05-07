@@ -58,9 +58,13 @@ class PainterController {
       try {
         console.log('inside the otp verification');
         
-        let {email , otp} = req.body
-        // email.trim()
-        // otp.trim()
+        console.log(typeof req.body.email,'type off ');
+        
+          const email = req.body.email
+          const otp = req.body.otp
+        email.trim()
+        otp.trim()
+        console.log(email ,'email inside verifcation');
 
         if(!isValidEmail(email)){
           return res
@@ -75,9 +79,42 @@ class PainterController {
       }else{
         const save = await this.painterUseCase.Register(verify.verify?.result)
       }
+      res.status(200).json(verify)
       } catch (error) {
         console.log(error);
         
+      }
+    }
+
+    async resendOTP(req:Req,res:Res){
+      try {
+        console.log('inside the resend otp backend');
+        
+        let {email} = req.body;
+        if(!isValidEmail){
+          return res
+            .status(400)
+            .json({success:false,message:"Invalid email"})
+        }else{
+          const resendOTP = await this.otpusecase.resendOTP(email)
+          if(resendOTP?.success){
+            res.status(200).json({
+              success: true,
+              message: resendOTP.message
+          })
+          }else{
+            res.status(400).json({
+              success: false,
+              message: resendOTP?.message
+          })
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: (error as Error)?.message,
+        })
       }
     }
 

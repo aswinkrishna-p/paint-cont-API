@@ -42,6 +42,27 @@ import otpModel from "../models/otpModel"
         }    
     }
 
+    async resendOTP (email:string , otp:string){
+        try {
+            const user = await otpModel.updateOne({email:email},{$set:{otp:otp}},{upsert:true})
+
+            if(user){
+                return{
+                    success:true,
+                    message:'OTP saved successfully'
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'user not found'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     //  find and delete user
 
     // async findAndDelete(email: string, verificationCode: string){
