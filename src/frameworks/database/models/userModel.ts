@@ -22,6 +22,15 @@ const userSchema:Schema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    profile: String,
+    phone:{
+        type:Number
+    },
+    address:{
+        houseNo:Number,
+        location:String,
+        pin:Number
+    }
 })
 
 
