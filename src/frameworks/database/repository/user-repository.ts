@@ -28,6 +28,40 @@ class userRepository{
         return null
      }
  }
+
+ async addAddress(newUserAddress:any,phoneNo:Number,userId:string){
+   try {
+      
+      const user = await userModel.findById(userId)
+
+      if(!user){
+         return {
+            success:false,
+            message:'user not found'
+         }
+      }else{
+
+         user.address = newUserAddress
+      }
+
+const updatedUser = await userModel.findByIdAndUpdate(userId, { phone: phoneNo, address: user.address }, { new: true });
+      
+      if(updatedUser){
+         return{
+            success:true,
+            message:'user address added'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in adding address'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
 }
 
 

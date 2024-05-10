@@ -87,6 +87,27 @@ class userController {
         
     }
 
+
+    async add_address(req:Req ,res:Res){
+      try {
+        let {address,phoneNo,userId} = req.body
+
+        console.log(req.body);
+        
+        address = req.body.address.trim()
+        phoneNo = req.body.phoneNo.trim()
+
+        if(!address || !phoneNo || !userId){
+          return res.status(400).json({success:false, message:'required fields are missing'})
+        }
+
+        const addAddress = await this.userUseCase.addUserAddress(address, phoneNo,userId)
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')
