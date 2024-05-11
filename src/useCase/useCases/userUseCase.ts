@@ -94,6 +94,7 @@ class Userusecase {
   }
 
   async addUserAddress(address:any,phoneNo:Number,userId:string){
+console.log('inside usecaseee');
 
     const newUserAddress = {
         houseNo: address.houseNo,

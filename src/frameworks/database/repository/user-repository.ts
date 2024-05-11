@@ -31,6 +31,7 @@ class userRepository{
 
  async addAddress(newUserAddress:any,phoneNo:Number,userId:string){
    try {
+      console.log('inside reepoo');
       
       const user = await userModel.findById(userId)
 
@@ -44,7 +45,7 @@ class userRepository{
          user.address = newUserAddress
       }
 
-const updatedUser = await userModel.findByIdAndUpdate(userId, { phone: phoneNo, address: user.address }, { new: true });
+      const updatedUser = await userModel.findByIdAndUpdate(userId, { phone: phoneNo, address: user.address }, { new: true });
       
       if(updatedUser){
          return{

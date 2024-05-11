@@ -92,9 +92,9 @@ class userController {
       try {
         let {address,phoneNo,userId} = req.body
 
-        console.log(req.body);
+        console.log(req.body,'req body');
         
-        address = req.body.address.trim()
+        // address = req.body.address.trim()
         phoneNo = req.body.phoneNo.trim()
 
         if(!address || !phoneNo || !userId){
@@ -102,6 +102,7 @@ class userController {
         }
 
         const addAddress = await this.userUseCase.addUserAddress(address, phoneNo,userId)
+        res.status(200).json(addAddress) 
       } catch (error) {
         console.log(error);
         
