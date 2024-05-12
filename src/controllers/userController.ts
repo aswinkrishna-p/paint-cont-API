@@ -92,16 +92,18 @@ class userController {
       try {
         let {address,phoneNo,userId} = req.body
 
-        console.log(req.body,'req body');
+        // console.log(req.body,'req body');
         
         // address = req.body.address.trim()
-        phoneNo = req.body.phoneNo.trim()
+        // phoneNo = req.body.phoneNo.trim()
 
-        if(!address || !phoneNo || !userId){
+        if(!phoneNo || !userId){
+        
           return res.status(400).json({success:false, message:'required fields are missing'})
         }
-
+       
         const addAddress = await this.userUseCase.addUserAddress(address, phoneNo,userId)
+      
         res.status(200).json(addAddress) 
       } catch (error) {
         console.log(error);
