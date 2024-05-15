@@ -63,6 +63,24 @@ class userRepository{
       
    }
  }
+
+ async saveprofilepic (userId:string, imageUrl:string){
+   try {
+      const photoSaved = await userModel.findOneAndUpdate(
+         { _id: userId },
+         { $set: { profile: imageUrl } },
+         { new: true }
+     );
+     // console.log(photoSaved);
+     return photoSaved;
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+
+
 }
 
 

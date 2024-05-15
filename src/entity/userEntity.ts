@@ -4,6 +4,7 @@ export interface Iuser {
     email:string,
     password:string,
     phone:number,
+    profile:string
     address:{
         houseNo:number,
         location:string,

@@ -22,7 +22,9 @@ const userSchema:Schema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
-    profile: String,
+    profile: {
+        type:String,
+    },
     phone:{
         type:Number
     },

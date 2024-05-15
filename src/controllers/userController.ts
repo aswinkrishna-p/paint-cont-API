@@ -111,6 +111,34 @@ class userController {
       }
     }
 
+    async profileupdate (req:Req ,res:Res){
+       try {
+         let {imageUrl ,userId} = req.body
+        console.log(req.body,'body from frontend');
+        
+         imageUrl = imageUrl.trim()
+         userId = userId.trim()
+
+         if ( !imageUrl || !userId ) {
+          return res.status(400).json({success: false, message: "Invalid imageUrl or userId"})
+          }
+
+          const saveprofilepic = await this.userUseCase.saveuserprofile(imageUrl,userId)
+          if(saveprofilepic?.success){
+            return res.status(200).json(saveprofilepic)
+          }else{
+            return res.status(400).json(saveprofilepic)
+          }
+       } catch (error) {
+        console.log(error);
+        res.status(500).json({
+          success:false,
+          message:'error in updateing profilepic'
+        })
+        
+       }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')
