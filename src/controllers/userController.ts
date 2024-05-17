@@ -76,9 +76,19 @@ class userController {
             sameSite: "none",
             expires: expirationDate,
             
+          });
+          return res.status(200).json({
+            success:true,
+            message:'login successful',
+            user:user.data,
+            token:user.token
+          });
+        }else{
+          return res.status(400).json({
+            success:false,
+            message:user?.message
           })
         }
-        res.status(200).json(user) 
       } catch (error) {
         console.log(error);
         
