@@ -120,7 +120,7 @@ class PainterController {
 
     async login(req:Req,res:Res){
       try {
-        // console.log('inside controller',req.body);
+        console.log('inside controller',req.body);
 
         let {email, password} = req.body
 
@@ -151,9 +151,19 @@ class PainterController {
             sameSite: "none",
             expires: expirationDate,
             
+          });
+          return res.status(200).json({
+            success:true,
+            message:'login successful',
+            user:user.data,
+            token:user.token
+          });
+        }else{
+          return res.status(400).json({
+            success:false,
+            message:user?.message
           })
         }
-        res.status(200).json(user) 
       } catch (error) {
         console.log(error);
         
@@ -161,6 +171,34 @@ class PainterController {
 
         
     }
+
+    async profileupdate (req:Req ,res:Res){
+      try {
+        let {imageUrl ,userId} = req.body
+       console.log(req.body,'body from frontend');
+       
+        imageUrl = imageUrl.trim()
+        userId = userId.trim()
+
+        if ( !imageUrl || !userId ) {
+         return res.status(400).json({success: false, message: "Invalid imageUrl or userId"})
+         }
+
+         const saveprofilepic = await this.painterUseCase.saveuserprofile(imageUrl,userId)
+         if(saveprofilepic?.success){
+           return res.status(200).json(saveprofilepic)
+         }else{
+           return res.status(400).json(saveprofilepic)
+         }
+      } catch (error) {
+       console.log(error);
+       res.status(500).json({
+         success:false,
+         message:'error in updateing profilepic'
+       })
+       
+      }
+   }
 
     async logout(req:Req,res:Res){
       try {

@@ -22,6 +22,9 @@ const userSchema:Schema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    profile: {
+        type:String,
+    },
 })
 
 

@@ -38,6 +38,23 @@ class painterRepository {
         return null
      }
  }
+
+ async saveprofilepic (userId:string, imageUrl:string){
+   try {
+      const photoSaved = await painterModel.findOneAndUpdate(
+         { _id: userId },
+         { $set: { profile: imageUrl } },
+         { new: true }
+     );
+     // console.log(photoSaved);
+     return photoSaved;
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+
 }
 
 export default painterRepository

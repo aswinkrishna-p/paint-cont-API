@@ -83,6 +83,30 @@ class PainterUseCase {
       console.log(error);
     }
   }
+
+
+  async  saveuserprofile(userId:string,imageUrl:string){
+    try {
+       const photoSaved = await this.painterRepository.saveprofilepic(userId,imageUrl)
+
+       if(photoSaved){
+          return {
+            success:true,
+            message:'image updated successfully'
+          }
+       }else{
+        return{
+          success:false,
+          message:'Error while updating profile pic'
+        }
+       }
+    } catch (error) {
+      console.log(error);
+      
+    }
+}
+
+
 }
 
 export default PainterUseCase;
