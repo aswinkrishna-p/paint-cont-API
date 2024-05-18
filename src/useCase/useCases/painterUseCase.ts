@@ -106,6 +106,30 @@ class PainterUseCase {
     }
 }
 
+async CreatePost(painterId:string,description:string,media:string){
+
+  try {
+    console.log('insdie the postusecase');
+    
+    const savepost = await this.painterRepository.savePost(painterId,media,description,)
+
+    if(savepost){
+      return{
+        success:true,
+        message:'post uploaded successfully'
+      }
+    }else{
+      return{
+        success:false,
+        message:'error while uploading post'
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 
 }
 

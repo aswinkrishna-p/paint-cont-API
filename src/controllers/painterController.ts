@@ -200,6 +200,37 @@ class PainterController {
       }
    }
 
+   async createPost(req:Req,res:Res){
+      try {
+
+        console.log(req.body,'post bodyyyyyyyyy');
+        
+        const painterId = req.body.painterId.trim()
+        const media = req.body.imageUrl.trim()
+        const description = req.body.description.trim()
+
+        if(!painterId || !media || !description){
+          return res.status(400).json({success:false, message:"missing required fields"})
+        }
+
+        const createpost = await this.painterUseCase.CreatePost(painterId,media,description)
+        if(createpost?.success){
+          return res.status(200).json({success:true, data:createpost,message:createpost.message})
+        }else{
+          return res.status(400).json({success:false,message:createpost?.message})
+        }
+        // console.log(painterId,media,description,'the dataaaaaa');
+        
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({
+          success:false,
+          message:'error in uploading post'
+        })
+        
+      }
+   }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('painter_token')

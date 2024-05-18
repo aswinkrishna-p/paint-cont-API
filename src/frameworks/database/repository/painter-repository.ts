@@ -2,6 +2,7 @@ import { Ipainter } from "../../../entity/painterEntity";
 import painterModel from "../models/painterModel";
 import { Document, Types } from "mongoose";
 import { Iotp } from "../../../entity/otp";
+import PostModel from "../models/postModel";
 
 
 
@@ -48,6 +49,23 @@ class painterRepository {
      );
      // console.log(photoSaved);
      return photoSaved;
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async savePost(painterId:string,description:string,media:string){
+   try {
+      
+      const newPost = new PostModel({
+         painterId:painterId,
+         media:media,
+         description:description
+      }) 
+
+      await newPost.save()
+      return newPost
    } catch (error) {
       console.log(error);
       
