@@ -17,6 +17,7 @@ router.post('/login',(req,res ) => controller.login(req,res))
 router.post('/logout',(req,res ) => controller.logout(req,res))
 router.put('/add-address',(req,res ) => controller.add_address(req,res))
 router.patch('/profile-update',(req,res ) => controller.profileupdate(req,res))
+router.get('/get-all-posts',(req,res ) => controller.getAllPosts(req,res))
 
 
 

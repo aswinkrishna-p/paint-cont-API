@@ -138,6 +138,27 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
+async fetchAllPosts(){
+  try {
+    const allposts = await this.userRepository.allPosts()
+    if(allposts) {
+      return {
+        success:true,
+        posts:allposts,
+        message:'All the posts fetched successfully'
+      }
+    }else{
+      return{
+        success:false,
+        message:'Error in fetching allposts'
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 }
 
 

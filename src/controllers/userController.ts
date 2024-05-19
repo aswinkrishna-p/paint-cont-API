@@ -4,6 +4,7 @@ import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/midd
 
 
 
+
 class userController {
 
     private userUseCase : Userusecase
@@ -147,6 +148,20 @@ class userController {
         })
         
        }
+    }
+
+    async getAllPosts(req:Req,res:Res){
+        try {
+          
+          const allposts = await this.userUseCase.fetchAllPosts()
+          return res.status(200).json(allposts)
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({
+            success:false,
+            message:'error in fetching all posts'
+          })
+        }
     }
 
     async logout(req:Req,res:Res){

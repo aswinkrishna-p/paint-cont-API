@@ -1,4 +1,5 @@
 import { Iuser } from "../../../entity/userEntity"
+import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
 
 class userRepository{
@@ -73,6 +74,18 @@ class userRepository{
      );
      // console.log(photoSaved);
      return photoSaved;
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async allPosts(){
+   try {
+      
+      const allposts = await PostModel.find().populate("painterId")
+      console.log(allposts,'all postss ');
+      return allposts
    } catch (error) {
       console.log(error);
       
