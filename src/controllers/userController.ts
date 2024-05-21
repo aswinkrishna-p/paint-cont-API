@@ -1,6 +1,7 @@
 import { Next, Req, Res } from "../frameworks/types/serverPackageTypes";
 import Userusecase from "../useCase/useCases/userUseCase";
 import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/middlewares/validations";
+import OtpUsecases from "../useCase/useCases/OtpUseCase";
 
 
 
@@ -8,8 +9,10 @@ import { isValidEmail,isValidPassword,isValiduserName } from "../frameworks/midd
 class userController {
 
     private userUseCase : Userusecase
-    constructor(userUseCase:Userusecase){
+    private otpusecase: OtpUsecases
+    constructor(userUseCase:Userusecase,otpusecase:OtpUsecases){
         this.userUseCase = userUseCase
+        this.otpusecase = otpusecase
     }
 
     async register(req: Req ,res:Res){
@@ -36,12 +39,83 @@ class userController {
               return res.status(400).json({ success: false, message: "Password must be at least 6 characters long" });
           }
 
-            const  user = await this.userUseCase.Register(req.body)
-            res.status(user.status).json(user)
+            // const  user = await this.userUseCase.Register(req.body)
+            // res.status(user.status).json(user)
+            const otpsend = await this.otpusecase.SendOtp(req.body)
+            res.status(200).json({
+              success: true,
+              message: "OTP sent successfully",
+          });
+
         } catch (error) {
             console.log(error);
             
         }
+    }
+
+    async otpVerification(req:Req,res:Res){
+      try {
+        console.log('inside the otp verification');
+        
+        console.log(typeof req.body.email,'type off ');
+        
+          const email = req.body.email
+          const otp = req.body.otp
+        email.trim()
+        otp.trim()
+        console.log(email ,'email inside verifcation');
+
+        if(!isValidEmail(email)){
+          return res
+          .status(200)
+          .json({ success: false, message: "Invalid email format" });
+        }
+
+        const verify = await this.otpusecase.verifyOTP(email,otp)
+
+        if(!verify?.success){
+          return res.status(400).json({success:false,message: verify?.message})
+      }else{
+        const save = await this.userUseCase.Register(verify.verify?.result)
+      }
+      res.status(200).json(verify)
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
+
+    async resendOTP(req:Req,res:Res){
+      try {
+        console.log('inside the resend otp backend');
+        
+        let {email} = req.body;
+        if(!isValidEmail){
+          return res
+            .status(400)
+            .json({success:false,message:"Invalid email"})
+        }else{
+          const resendOTP = await this.otpusecase.resendOTP(email)
+          if(resendOTP?.success){
+            res.status(200).json({
+              success: true,
+              message: resendOTP.message
+          })
+          }else{
+            res.status(400).json({
+              success: false,
+              message: resendOTP?.message
+          })
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: (error as Error)?.message,
+        })
+      }
     }
 
     async login(req:Req,res:Res){

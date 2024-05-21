@@ -2,6 +2,8 @@ import { Iuser } from "../../entity/userEntity";
 import userRepository from "../../frameworks/database/repository/user-repository";
 import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
+import { Document, ObjectId, Schema, Types } from "mongoose";
+import { Iotp } from "../../entity/otp";
 
 
 const bcrypt = new Encrypted()
@@ -14,26 +16,17 @@ class Userusecase {
     this.userRepository = userRepository;
   }
 
-  async Register(user: Iuser) {
-    const checkemail = await this.userRepository.findByEmail(user.email);
+  async Register(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined ) {
+  
+    const Rdata = await this.userRepository.saveuser(user);
+    return {
+      status: 200,
+      message: Rdata.message,
+      data: Rdata.data,
+    };
+  
+}
 
-    if (checkemail) {
-      return {
-        status: 400,
-        message: "User already exists",
-      };
-    } else {
-      const newPassword = await bcrypt.hashpass(user.password);
-      user.password = newPassword;
-
-      const Rdata = await this.userRepository.saveuser(user);
-      return {
-        status: 200,
-        message: Rdata.message,
-        data: Rdata.data,
-      };
-    }
-  }
 
   async login(user: Iuser) {
     console.log("inside login");

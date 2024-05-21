@@ -1,19 +1,27 @@
 import { Iuser } from "../../../entity/userEntity"
 import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
+import { Document, Types } from "mongoose";
+import { Iotp } from "../../../entity/otp";
 
 class userRepository{
-    async saveuser(user:Iuser){
-        const newUser = new userModel(user)
-       await newUser.save()
-       newUser.password=''
-        return {
-         status:200,
-         success:true,
-         data:newUser,
-         message:'user registerd success'
-        }
-    }
+   async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
+
+      const data ={
+         username:user?.username,
+         email:user?.email,
+         password:user?.password
+      }
+     const newUser = new userModel(data)
+    await newUser.save()
+    newUser.password=''
+     return {
+      status:200,
+      success:true,
+      data:newUser,
+      message:'user registerd success'
+     }
+ }
 
   async findByEmail(email: string) {
      const existingUser =  await userModel.findOne({email})
@@ -84,7 +92,7 @@ class userRepository{
    try {
       
       const allposts = await PostModel.find().populate("painterId")
-      console.log(allposts,'all postss ');
+      // console.log(allposts,'all postss ');
       return allposts
    } catch (error) {
       console.log(error);
