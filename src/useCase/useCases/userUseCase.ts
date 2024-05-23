@@ -31,7 +31,7 @@ class Userusecase {
   async login(user: Iuser) {
     console.log("inside login");
     try {
-      const userdata = await this.userRepository.findByEmail(user.email);
+      const userdata = await this.userRepository.login(user.email);
 
       if (!userdata) {
         return {
@@ -39,7 +39,7 @@ class Userusecase {
           message: "user not found",
         };
       } else {
-        if (!userdata.status) {
+        if (userdata.isBlocked) {
           return {
             success: false,
             message: "user blocked by admin",
@@ -48,14 +48,14 @@ class Userusecase {
 
         const validpass = await bcrypt.comparePass(
           user.password,
-          userdata.data.password
+          userdata.password
         );
 
-        userdata.data.password = "";
+        userdata.password = "";
 
         if (validpass) {
           const token = await JWT.createToken(
-            userdata.data._id as string,
+            userdata._id as string,
             "user"
           );
           // console.log(token,'token indakiii');
@@ -65,7 +65,7 @@ class Userusecase {
               status: 200,
               success: true,
               message: "valid user",
-              data: userdata?.data,
+              data: userdata,
               token: token,
             };
           } else {

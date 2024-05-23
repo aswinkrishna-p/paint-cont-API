@@ -10,5 +10,5 @@ export interface Iuser {
         location:string,
         pin:number
     }
-    isBlocked?:boolean,
+    isBlocked:boolean,
 }

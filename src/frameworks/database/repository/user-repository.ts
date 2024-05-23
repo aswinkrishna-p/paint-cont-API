@@ -25,18 +25,29 @@ class userRepository{
 
   async findByEmail(email: string) {
      const existingUser =  await userModel.findOne({email})
-
+   console.log(existingUser);
+   
      if(existingUser){
         return {
-          status:200,
-          success:true,
+          success:false,
           data:existingUser,
           message: 'user already existes'
         }
      }else{
-        return null
+        return {
+         success:true,
+        }
      }
  }
+ 
+ async login(email: string) {
+   try {
+       const user = await userModel.findOne({ email });
+       return user;
+   } catch (error) {
+       console.log(error);
+   }
+}
 
  async addAddress(newUserAddress:any,phoneNo:Number,userId:string){
    try {
