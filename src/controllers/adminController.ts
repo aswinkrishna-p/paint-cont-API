@@ -85,6 +85,20 @@ class AdminController {
         }
     }
 
+    async getPainters (req:Req,res:Res){
+        try {
+            const users = await this.AdminUseCase.Painters()
+            res.status(200).json({users})
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                success:false,
+                message:(error as Error)?.message
+            })
+            
+        }
+    }
+
     async blockUser(req:Req ,res:Res){
         try {
             const userId = req.params.id

@@ -1,4 +1,5 @@
 import AdminModel from "../models/adminModel";
+import painterModel from "../models/painterModel";
 import userModel from "../models/userModel";
 
 
@@ -27,6 +28,17 @@ class AdminRepository {
             
         }
     }
+    async getAllPainters() {
+        try {
+            let res = await painterModel.find()
+            // console.log(res,'users found in repoo');
+            return res
+        } catch (error) {
+            console.log(error);
+            return null
+            
+        }
+    }
 
     async  changestatus(userId:string){
         try {
@@ -39,7 +51,7 @@ class AdminRepository {
                 if(success){
                     return{
                         success:true,
-                        message: ` ${user.isBlocked ? 'Unblocked' : 'Blocked'} user`,
+                        message: ` ${user.isBlocked ? 'blocked' : 'Unblocked'} user`,
                         user: user
                     }
                 }else{

@@ -69,6 +69,26 @@ class AdminUseCase {
         }
     }
 
+    async Painters(){
+        try {
+            const users = await this.adminrepository.getAllPainters()
+            if(users){
+                return{
+                    success:true,
+                    data:users
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'users data not found'
+                }
+            }
+        } catch (error) {
+          console.log(error);
+            
+        }
+    }
+
     async changeUserStatus(userId:string){
         try {
             const blockuser = await this.adminrepository.changestatus(userId)

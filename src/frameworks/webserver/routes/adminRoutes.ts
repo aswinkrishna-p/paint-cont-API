@@ -16,6 +16,7 @@ const router = express.Router()
 router.post('/adminlogin',(req ,res) => controller.adminLogin(req, res))
 router.post('/logout',(req ,res) => controller.adminLogout(req, res))
 router.get('/allusers',(req,res) => controller.getUsers(req,res))
+router.get('/allpainters',(req,res) => controller.getPainters(req,res))
 router.patch('/blockuser/:id',(req,res) => controller.blockUser(req,res))
 
 export default router
