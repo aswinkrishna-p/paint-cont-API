@@ -98,5 +98,15 @@ class AdminUseCase {
             
         }
     }
+
+    async changePainterStatus(userId:string){
+        try {
+            const blockuser = await this.adminrepository.changePainterStatus(userId)
+            return blockuser
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
 export default AdminUseCase

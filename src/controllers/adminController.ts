@@ -125,6 +125,32 @@ class AdminController {
             
         }
     }
+    async blockPainter(req:Req ,res:Res){
+        try {
+            const userId = req.params.id
+            if(!userId){
+                return res.status(400).json({success:false,message:'invalid painter id '})
+            }
+
+            const blockuser = await this.AdminUseCase.changePainterStatus(userId)
+            if(blockuser?.success){
+                return res.status(200).json({
+                    success:true,
+                    user:blockuser.user,
+                    message:blockuser.message
+                })
+            }else{
+                return res.status(400).json({
+                    success:false,
+                    message:blockuser?.message
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ success: false, message: (error as Error).message });
+            
+        }
+    }
 }
 
 export default AdminController

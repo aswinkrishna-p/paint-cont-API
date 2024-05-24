@@ -18,5 +18,6 @@ router.post('/logout',(req ,res) => controller.adminLogout(req, res))
 router.get('/allusers',(req,res) => controller.getUsers(req,res))
 router.get('/allpainters',(req,res) => controller.getPainters(req,res))
 router.patch('/blockuser/:id',(req,res) => controller.blockUser(req,res))
+router.patch('/blockpainter/:id',(req,res) => controller.blockPainter(req,res))
 
 export default router

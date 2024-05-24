@@ -72,6 +72,39 @@ class AdminRepository {
             
         }
     }
+
+    async  changePainterStatus(userId:string){
+        try {
+            const user = await painterModel.findById(userId)
+
+            if(user){
+                user.isBlocked = ! user.isBlocked
+                const success = await user.save()
+
+                if(success){
+                    return{
+                        success:true,
+                        message: ` ${user.isBlocked ? 'blocked' : 'Unblocked'} painter`,
+                        user: user
+                    }
+                }else{
+                    return{
+                        success:false,
+                        message: ` ${user.isBlocked? 'Unblocked' : 'Blocked'} painter`,
+        
+                    }
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'painter not found'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
 
 export default AdminRepository
