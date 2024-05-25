@@ -238,6 +238,15 @@ class userController {
         }
     }
 
+    async searchPainter(req:Req ,res:Res){
+      try {
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')
