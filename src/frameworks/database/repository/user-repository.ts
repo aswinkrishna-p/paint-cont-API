@@ -99,17 +99,7 @@ class userRepository{
    }
  }
 
- async allPosts(){
-   try {
-      
-      const allposts = await PostModel.find().populate("painterId")
-      // console.log(allposts,'all postss ');
-      return allposts
-   } catch (error) {
-      console.log(error);
-      
-   }
- }
+
 
 
 

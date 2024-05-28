@@ -224,20 +224,6 @@ class userController {
        }
     }
 
-    async getAllPosts(req:Req,res:Res){
-        try {
-          
-          const allposts = await this.userUseCase.fetchAllPosts()
-          return res.status(200).json(allposts)
-        } catch (error) {
-          console.log(error);
-          res.status(500).json({
-            success:false,
-            message:'error in fetching all posts'
-          })
-        }
-    }
-
     async searchPainter(req:Req ,res:Res){
       try {
         
