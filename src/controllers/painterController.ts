@@ -231,6 +231,28 @@ class PainterController {
       }
    }
 
+   async  updateDetails(req:Req,res:Res){
+      try {
+        console.log(req.body);
+        const painterid = req.body.painterId
+        const details = req.body.details
+
+        console.log('painterid',painterid);
+        console.log('detaislsss',details);
+
+        if(!painterid || !details){
+          return res.status(400).json({success:false, message:"missing required fields"})
+        }
+
+        
+        
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
+   }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('painter_token')
