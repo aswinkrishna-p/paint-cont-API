@@ -71,6 +71,28 @@ class painterRepository {
       
    }
  }
+ async updatePainterDetails(painterid:string,details: Object){
+   try {
+      
+      const painter = await painterModel.findByIdAndUpdate(painterid,details,{new:true})
+
+      if(!painter){
+         return {
+            success:false,
+            message:'painter not found',
+         }
+      }else{
+         return {
+            success:true,
+            message:'painter details updated successfully',
+         }
+         
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
 
 
 }

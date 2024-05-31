@@ -25,6 +25,20 @@ const userSchema:Schema = new mongoose.Schema({
     profile: {
         type:String,
     },
+    phone: {
+        type: String,  
+    },age: {
+        type: Number,
+    },
+    experienceYears: {
+        type: Number,
+    },
+    specialised: {
+        type: [String],
+        default: []
+    },
+    aboutMe: {type :String},
+    location:{type:String}
 })
 
 

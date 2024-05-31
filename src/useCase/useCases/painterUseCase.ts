@@ -130,6 +130,27 @@ async CreatePost(painterId:string,description:string,media:string){
   }
 }
 
+async updateDetails(painterId:string,details:Object) {
+  try {
+    
+    const updateDetails = await this.painterRepository.updatePainterDetails(painterId,details)
+
+    if(updateDetails){
+      return {
+        success:true,
+        message:updateDetails.message
+      }
+    }else{
+      return{
+        success:false,
+        message:' error in updating details'
+      }
+    }
+  } catch (error) {
+    
+  }
+}
+
 
 }
 

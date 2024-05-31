@@ -244,8 +244,13 @@ class PainterController {
           return res.status(400).json({success:false, message:"missing required fields"})
         }
 
+        const updated = await this.painterUseCase.updateDetails(painterid,details)
         
-        
+        if(updated?.success){
+          return res.status(200).json({success:true, message:updated.message})
+        }else{
+          return res.status(400).json({success:false, message:updated?.message})
+        }
         
       } catch (error) {
         console.log(error);
