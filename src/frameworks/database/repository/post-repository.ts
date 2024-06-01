@@ -11,6 +11,17 @@ class postRepository {
     }
   }
 
+  async painterPosts(painterid:string){
+    try {
+      const posts = await PostModel.find({painterId:painterid}).populate("painterId")
+      // console.log('posts fetched',posts);
+      return posts
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async reportPost(postId: string) {
     try {
       const post = await PostModel.findByIdAndUpdate(

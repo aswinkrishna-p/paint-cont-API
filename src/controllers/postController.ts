@@ -30,6 +30,20 @@ class postController {
             }
         }
 
+        async getPainterPosts(req:Req,res:Res){
+          try {
+            const painterId = req.params.id
+            console.log(painterId,'painter id');
+
+            const allposts = await this.postUseCase.painterPosts(painterId)
+            return res.status(200).json(allposts)
+            
+          } catch (error) {
+            console.log(error);
+            
+          }
+        }
+
         async reportPost(req:Req,res:Res){
           try {
             const {postId} = req.body

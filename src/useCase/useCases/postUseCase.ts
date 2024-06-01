@@ -36,6 +36,27 @@ class PostUseCase {
         }
       }
 
+      async painterPosts(painterid:string){
+        try {
+          const posts = await this.postRepository.painterPosts(painterid)
+          if(posts) {
+            return {
+              success:true,
+              posts:posts,
+              message:'All the posts fetched successfully'
+            }
+          }else{
+            return{
+              success:false,
+              message:'Error in fetching allposts'
+            }
+          }
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
+
       async reportPosts(postId:string){
         try {
           const reported = await this.postRepository.reportPost(postId)
