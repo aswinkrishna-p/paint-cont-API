@@ -51,6 +51,21 @@ class postRepository {
       console.log(error);
     }
   }
+
+  async deletePost(postId:string){
+    try {
+      
+      const deleted = await PostModel.findByIdAndDelete(postId)
+
+      if(deleted){
+        console.log('post deleted successfully');
+        
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
 }
 
 export default postRepository;

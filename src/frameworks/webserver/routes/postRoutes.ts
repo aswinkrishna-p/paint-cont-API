@@ -14,6 +14,7 @@ const router = express.Router()
 router.get('/get-all-posts',(req,res ) => controller.getAllPosts(req,res))
 router.post('/report-post',(req,res ) => controller.reportPost(req,res))
 router.get('/getpainterpost/:id',(req,res ) => controller.getPainterPosts(req,res))
+router.delete('/delete-post/:postId',(req,res ) => controller.deltePost(req,res))
 
 
 

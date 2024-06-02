@@ -33,7 +33,7 @@ class postController {
         async getPainterPosts(req:Req,res:Res){
           try {
             const painterId = req.params.id
-            console.log(painterId,'painter id');
+            // console.log(painterId,'painter id');
 
             const allposts = await this.postUseCase.painterPosts(painterId)
             return res.status(200).json(allposts)
@@ -67,6 +67,27 @@ class postController {
             }
 
             return res.status(200).json({success:true,message:'report count updated',data:postReported})
+            
+          } catch (error) {
+            console.log(error);
+            
+          }
+        }
+
+        async deltePost(req:Req,res:Res){
+          try {
+
+            const {postId} = req.params
+            console.log(postId,'id posttt');
+
+            if(!postId){
+              return res.status(400).json({
+                success:false,
+                message:'invalid postId'
+              })
+            }
+
+            const deletepost = await this.postUseCase.deletePost(postId)
             
           } catch (error) {
             console.log(error);

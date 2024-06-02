@@ -78,6 +78,17 @@ class PostUseCase {
         }
       }
 
+
+      async deletePost(postId:string){
+        try {
+          
+          const Dltpost = await this.postRepository.deletePost(postId)
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
+
 }
 
 
