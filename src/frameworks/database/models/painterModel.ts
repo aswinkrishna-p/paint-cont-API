@@ -37,6 +37,10 @@ const userSchema:Schema = new mongoose.Schema({
         type: [String],
         default: []
     },
+    followers: {
+        type: [String],
+        default: []
+    },
     aboutMe: {type :String},
     location:{type:String}
 })
