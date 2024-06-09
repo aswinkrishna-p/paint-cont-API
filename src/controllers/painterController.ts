@@ -231,6 +231,17 @@ class PainterController {
       }
    }
 
+   async getPainter(req:Req,res:Res){
+    try {
+      const id = req.params.id 
+      console.log(id);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
    async  updateDetails(req:Req,res:Res){
       try {
         console.log(req.body);
