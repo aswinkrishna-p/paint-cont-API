@@ -94,6 +94,17 @@ class painterRepository {
    }
  }
 
+ async getpainter(painterid:string){
+   try {
+      const painter = await painterModel.findById(painterid)
+
+      return painter
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
 
 }
 

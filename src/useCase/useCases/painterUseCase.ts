@@ -15,15 +15,18 @@ class PainterUseCase {
     this.painterRepository = painterRepository;
   }
 
-  async Register(painter:| Ipainter  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined ) {
-  
-      const Rdata = await this.painterRepository.saveuser(painter);
-      return {
-        status: 200,
-        message: Rdata.message,
-        data: Rdata.data,
-      };
-    
+  async Register(
+    painter:
+      | Ipainter
+      | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId })
+      | undefined
+  ) {
+    const Rdata = await this.painterRepository.saveuser(painter);
+    return {
+      status: 200,
+      message: Rdata.message,
+      data: Rdata.data,
+    };
   }
 
   async login(painter: Ipainter) {
@@ -84,74 +87,94 @@ class PainterUseCase {
     }
   }
 
-
-  async  saveuserprofile(userId:string,imageUrl:string){
+  async getpainter(painterid: string) {
     try {
-       const photoSaved = await this.painterRepository.saveprofilepic(userId,imageUrl)
-
-       if(photoSaved){
-          return {
-            success:true,
-            message:'image updated successfully'
-          }
-       }else{
+      const painter = await this.painterRepository.getpainter(painterid);
+      if (painter) {
+        return {
+          success: true,
+          data: painter,
+        };
+      }else{
         return{
           success:false,
-          message:'Error while updating profile pic'
+          message:'painter not found'
         }
-       }
+      }
     } catch (error) {
       console.log(error);
-      
     }
-}
-
-async CreatePost(painterId:string,description:string,media:string){
-
-  try {
-    console.log('insdie the postusecase');
-    
-    const savepost = await this.painterRepository.savePost(painterId,media,description,)
-
-    if(savepost){
-      return{
-        success:true,
-        message:'post uploaded successfully'
-      }
-    }else{
-      return{
-        success:false,
-        message:'error while uploading post'
-      }
-    }
-  } catch (error) {
-    console.log(error);
-    
   }
-}
 
-async updateDetails(painterId:string,details:Object) {
-  try {
-    
-    const updateDetails = await this.painterRepository.updatePainterDetails(painterId,details)
+  async saveuserprofile(userId: string, imageUrl: string) {
+    try {
+      const photoSaved = await this.painterRepository.saveprofilepic(
+        userId,
+        imageUrl
+      );
 
-    if(updateDetails){
-      return {
-        success:true,
-        message:updateDetails.message
+      if (photoSaved) {
+        return {
+          success: true,
+          message: "image updated successfully",
+        };
+      } else {
+        return {
+          success: false,
+          message: "Error while updating profile pic",
+        };
       }
-    }else{
-      return{
-        success:false,
-        message:' error in updating details'
-      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    
   }
-}
 
+  async CreatePost(painterId: string, description: string, media: string) {
+    try {
+      console.log("insdie the postusecase");
 
+      const savepost = await this.painterRepository.savePost(
+        painterId,
+        media,
+        description
+      );
+
+      if (savepost) {
+        return {
+          success: true,
+          message: "post uploaded successfully",
+        };
+      } else {
+        return {
+          success: false,
+          message: "error while uploading post",
+        };
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateDetails(painterId: string, details: Object) {
+    try {
+      const updateDetails = await this.painterRepository.updatePainterDetails(
+        painterId,
+        details
+      );
+
+      if (updateDetails) {
+        return {
+          success: true,
+          message: updateDetails.message,
+        };
+      } else {
+        return {
+          success: false,
+          message: " error in updating details",
+        };
+      }
+    } catch (error) {}
+  }
 }
 
 export default PainterUseCase;

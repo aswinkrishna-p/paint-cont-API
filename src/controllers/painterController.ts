@@ -233,8 +233,19 @@ class PainterController {
 
    async getPainter(req:Req,res:Res){
     try {
-      const id = req.params.id 
-      console.log(id);
+
+      console.log('insdie hereee');
+      
+      const id = req.params.painterId
+
+      const painter = await this.painterUseCase.getpainter(id)
+      if(painter?.success){
+        res.status(200).json({success:true,painter:painter?.data})
+
+      }else{
+        return res.status(400).json({success:false,message:painter?.message})
+
+      }
       
     } catch (error) {
       console.log(error);
