@@ -253,6 +253,25 @@ class PainterController {
     }
    }
 
+   async followPainter(req:Req,res:Res){
+    try {
+      const {painterId ,userId} = req.body
+        console.log('helloooooo');
+        
+      if(!painterId || !userId){
+        return res.status(404).json({success:false,message:'missing required fields'})
+      }
+
+      const updatePainter = await this.painterUseCase.updateFollowers(painterId,userId)
+      if(updatePainter?.success){
+        return res.status(200).json({success:true, data:updatePainter.data, message:updatePainter.message})
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
    async  updateDetails(req:Req,res:Res){
       try {
         console.log(req.body);

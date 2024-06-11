@@ -106,6 +106,23 @@ class PainterUseCase {
     }
   }
 
+  async updateFollowers(painterId:string,userId:string){
+    try {
+      
+      const followPainter = await this.painterRepository.addFollowers(painterId,userId)
+      if(followPainter?.success){
+        return {
+          success:true,
+          data:followPainter.data,
+          message:followPainter.message
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async saveuserprofile(userId: string, imageUrl: string) {
     try {
       const photoSaved = await this.painterRepository.saveprofilepic(

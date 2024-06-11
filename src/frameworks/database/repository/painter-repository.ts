@@ -105,6 +105,41 @@ class painterRepository {
    }
  }
 
+ async addFollowers(painterId:string,userId:string){
+   try {
+      const painter = await painterModel.findById(painterId)
+
+      if(!painter){
+         return {
+            success:false,
+            message:'painter not found'
+         }
+      }
+
+      painter.followers = painter.followers || []
+
+      let followed = false
+
+      if(painter.followers.includes(userId)){
+         painter.followers = painter.followers.filter((followerId) => followerId !== userId)
+      }else{
+         painter.followers.push(userId)
+         followed = true
+      }
+
+      await painter.save()
+
+      return {
+         success:true,
+         data:followed,
+         message:'followed painter successfully'
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
 
 }
 
