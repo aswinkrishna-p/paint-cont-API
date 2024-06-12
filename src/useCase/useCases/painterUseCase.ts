@@ -123,6 +123,23 @@ class PainterUseCase {
     }
   }
 
+  async getfollowers(painterid:string){
+    try {
+      const res = await this.painterRepository.followersList(painterid)
+
+      if(res){
+          return {
+            success:true,
+            data:res
+          }
+      }
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async saveuserprofile(userId: string, imageUrl: string) {
     try {
       const photoSaved = await this.painterRepository.saveprofilepic(

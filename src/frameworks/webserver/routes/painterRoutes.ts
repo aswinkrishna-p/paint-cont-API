@@ -25,6 +25,7 @@ router.post('/resend-otp',(req ,res) => controller.resendOTP(req,res))
 router.patch('/profile-update',(req,res ) => controller.profileupdate(req,res))
 router.post('/create-post',(req,res ) => controller.createPost(req,res))
 router.post('/follow-painter',(req,res ) => controller.followPainter(req,res))
+router.get('/followers/:painterId',(req,res ) => controller.getFollowers(req,res))
 router.post('/update-details',(req,res ) => controller.updateDetails(req,res))
 router.post('/logout', (req,res) => controller.logout(req,res))
 

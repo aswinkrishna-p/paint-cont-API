@@ -272,6 +272,22 @@ class PainterController {
     }
    }
 
+   async getFollowers(req:Req,res:Res){
+    try {
+      const id = req.params.painterId
+      console.log(id);
+      const Followers = await this.painterUseCase.getfollowers(id)
+
+      if(Followers?.success){
+        return res.status(200).json({success:true, data:Followers.data})
+      }
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
    async  updateDetails(req:Req,res:Res){
       try {
         console.log(req.body);

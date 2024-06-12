@@ -3,6 +3,7 @@ import painterModel from "../models/painterModel";
 import { Document, Types } from "mongoose";
 import { Iotp } from "../../../entity/otp";
 import PostModel from "../models/postModel";
+import userModel from "../models/userModel";
 
 
 
@@ -134,6 +135,37 @@ class painterRepository {
          data:followed,
          message:'followed painter successfully'
       }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async  followersList(painterid:string){
+   try {
+      const painter = await painterModel.findById(painterid)
+      if(!painter || ! painter.followers){
+         return {
+            success:false,
+            message:'painter not found or no followers'
+         }
+      }
+
+      const followers = painter.followers
+
+      let list = []
+
+      for(let i =0 ; i<followers.length ; i++){
+         const followerid = followers[i]
+
+         const user = await userModel.findById(followerid)
+
+         if(user){
+            list.push(user)
+         }
+      }
+
+      return list
    } catch (error) {
       console.log(error);
       
