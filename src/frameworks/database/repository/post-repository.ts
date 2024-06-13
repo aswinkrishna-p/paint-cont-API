@@ -22,6 +22,44 @@ class postRepository {
     }
   }
 
+  async  updateLikes(postId:string,userId:string){
+    try {
+      
+      let reported 
+
+      const post = await PostModel.findById(postId)
+
+      if(!post){
+         return { 
+           success: false,
+           message: "Post not found" 
+          };
+       }
+
+       const userindex = post.likes.indexOf(userId)
+
+       if(userindex === -1){
+        post.likes.push(userId)
+        reported = true
+       }else{
+        post.likes.splice(userindex,1)
+        reported = false
+       }
+
+       await post.save()
+
+       return {
+        success:true,
+        message:'updated like in the post',
+        post
+       }
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async reportPost(postId: string) {
     try {
       const post = await PostModel.findByIdAndUpdate(

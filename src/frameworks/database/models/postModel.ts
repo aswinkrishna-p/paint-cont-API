@@ -7,8 +7,8 @@ const PostSchema: Schema = new mongoose.Schema({
   description: { type: String, required: true },
   comments: { type: [String], default: [] },
   time: { type: Date, default: Date.now },
-  likes: { type: Number, default: 0 },
-  reportCount: { type: Number, default: 0 },
+  likes: [],
+  reportCount: [],
 });
 
 const PostModel = mongoose.model<Ipost>("Post", PostSchema);

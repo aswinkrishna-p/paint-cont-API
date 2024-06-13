@@ -5,6 +5,6 @@ export interface Ipost{
     description: string;
     comments: string[];
     time: Date;
-    likes: number;
+    likes: string[];
     reportCount: number;
 }

@@ -44,6 +44,26 @@ class postController {
           }
         }
 
+        async updateLike(req:Req,res:Res){
+          try {
+            const {postId ,userId} = req.body
+            console.log(postId,'post id');
+            console.log(userId,'user id');
+
+            if(!postId || !userId){
+        
+              return res.status(400).json({success:false, message:'required fields are missing'})
+            }
+        
+            const updatelike = await this.postUseCase.updateLikes(postId,userId)
+            return res.status(200).json({success:true, message:updatelike?.message , data:updatelike?.data})
+            
+          } catch (error) {
+            console.log(error);
+            
+          }
+        }
+
         async reportPost(req:Req,res:Res){
           try {
             const {postId} = req.body

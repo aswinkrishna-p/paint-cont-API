@@ -78,6 +78,29 @@ class PostUseCase {
         }
       }
 
+      async updateLikes(postId:string ,userId:string){
+        try {
+          
+          const likes = await this.postRepository.updateLikes(postId,userId)
+
+          if(likes?.success){
+            return {
+              success:true,
+              message:likes.message,
+              data:likes.post
+            }
+          }else{
+            return {
+              success:false,
+              message:'error in updating likes'
+            }
+          }
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
+
 
       async deletePost(postId:string){
         try {
