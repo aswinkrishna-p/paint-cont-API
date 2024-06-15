@@ -1,4 +1,7 @@
+import mongoose from "mongoose";
+import painterModel from "../models/painterModel";
 import PostModel from "../models/postModel";
+import userModel from "../models/userModel";
 
 class postRepository {
   async allPosts() {
@@ -58,6 +61,67 @@ class postRepository {
       console.log(error);
       
     }
+  }
+
+  async addComment(postId:string ,userId :string ,content :string){
+      try {
+        console.log('inside addcomment');
+        
+        const post = await PostModel.findById(postId)
+
+        if(!post){
+          return { 
+            success: false,
+            message: "Post not found" 
+           };
+        }
+
+        let user = null;
+        let userName = '';
+    
+        // Check if the userId exists in UserModel
+        user = await userModel.findById(userId);
+        if (user) {
+          userName = user.username;
+        } else {
+          // If not found in UserModel, check in PainterModel
+          user = await painterModel.findById(userId);
+          if (user) {
+            userName = user.username;
+          }
+        }
+    
+        if (!user) {
+          return { 
+            success: false,
+            message: "User or Painter not found" 
+          }
+        }
+    
+        // Create the new comment
+        const newComment = {
+          text: content,
+          userId: new mongoose.Types.ObjectId(user._id),
+          time: new Date(),
+          userName: userName
+        };
+    
+        // Push the new comment into the comments array
+        post.comments.push(newComment);
+    
+        // Save the updated post
+        await post.save();
+    
+        return{ 
+          success: true, 
+          message:'comment added successfully',
+          comment: newComment 
+        }
+
+      } catch (error) {
+        console.log(error);
+        
+      }
   }
 
   async reportPost(postId: string) {

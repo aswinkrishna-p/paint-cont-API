@@ -64,6 +64,29 @@ class postController {
           }
         }
 
+        async addComment(req:Req ,res:Res){
+          try {
+            
+            const {postId , userId , content} = req.body
+
+            console.log(req.body,'bodyyyyyyyyyyy');
+            
+
+            if(!postId || !userId || !content){
+        
+              return res.status(400).json({success:false, message:'required fields are missing'})
+            }
+
+            const updatecomment = await this.postUseCase.addcomment(postId ,userId, content)
+
+            res.status(200).json({success:true, message:updatecomment?.message,data:updatecomment?.data})
+
+          } catch (error) {
+            console.log(error);
+            res.status(500).json({ success: false, message: "Internal Server Error" });
+          }
+        }
+
         async reportPost(req:Req,res:Res){
           try {
             const {postId} = req.body

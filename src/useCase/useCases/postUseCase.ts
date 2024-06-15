@@ -101,6 +101,29 @@ class PostUseCase {
         }
       }
 
+      async addcomment(postId:string , userId:string , content:string){
+          try {
+            
+            const addcomment = await this.postRepository.addComment(postId,userId,content)
+
+            if(addcomment?.success){
+              return{
+                success:true,
+                message:addcomment.message,
+                data:addcomment.comment
+              }
+            }else{
+              return {
+                success:false,
+                message:'error in adding comment'
+              }
+            }
+          } catch (error) {
+            console.log(error);
+            
+          }
+      }
+
 
       async deletePost(postId:string){
         try {
