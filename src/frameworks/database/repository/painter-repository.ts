@@ -4,6 +4,7 @@ import { Document, Types } from "mongoose";
 import { Iotp } from "../../../entity/otp";
 import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
+import SlotModel from "../models/slotsModel";
 
 
 
@@ -100,6 +101,22 @@ class painterRepository {
       const painter = await painterModel.findById(painterid)
 
       return painter
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async saveslots(painterid:string,slots:Array<object>){
+   try {
+
+      // const { date, startTime, endTime, amount } = slots
+      // const existingSlot = await SlotModel.findOne({ painterid, date, start: startTime, end: endTime });
+
+      // if (existingSlot) {
+      //   return res.status(409).json({ message: 'Slot already exists' });
+      // }
+  
    } catch (error) {
       console.log(error);
       

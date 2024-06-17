@@ -106,6 +106,17 @@ class PainterUseCase {
     }
   }
 
+  async saveSlots(painterid:string,slot:Array<object>){
+    try {
+      console.log(slot[0],'slotttttttttt');
+      
+      const savedata = await this.painterRepository.saveslots(painterid,slot)
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async updateFollowers(painterId:string,userId:string){
     try {
       

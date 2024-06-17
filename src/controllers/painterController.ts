@@ -231,6 +231,26 @@ class PainterController {
       }
    }
 
+   async createSlot(req:Req,res:Res){
+    try {
+      
+      const painterId = req.params.painterId
+      const {slots} = req.body
+      console.log(slots,'slotss');
+      console.log(painterId,'idddddddddd');
+      
+      if(!painterId || !slots){
+        return res.status(400).json({success:false, message:"missing required fields"})
+      }
+
+      const saveslot = await this.painterUseCase.saveSlots(painterId,slots)
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
    async getPainter(req:Req,res:Res){
     try {
 
