@@ -1,5 +1,6 @@
 import { Iotp } from "../../entity/otp";
 import { Ipainter } from "../../entity/painterEntity";
+import { SlotInterface } from "../../entity/slotsEntity";
 import painterRepository from "../../frameworks/database/repository/painter-repository";
 import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
@@ -106,11 +107,18 @@ class PainterUseCase {
     }
   }
 
-  async saveSlots(painterid:string,slot:Array<object>){
+  async saveSlots(painterid:string,slot:SlotInterface[]){
     try {
-      console.log(slot[0],'slotttttttttt');
+      console.log(slot[0].date,'slotttttttttt');
       
       const savedata = await this.painterRepository.saveslots(painterid,slot)
+
+      if(savedata?.success){
+        return {
+          success:true,
+          message:savedata.message
+        }
+      }
     } catch (error) {
       console.log(error);
       

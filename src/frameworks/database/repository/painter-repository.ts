@@ -5,6 +5,7 @@ import { Iotp } from "../../../entity/otp";
 import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
 import SlotModel from "../models/slotsModel";
+import { SlotInterface } from "../../../entity/slotsEntity";
 
 
 
@@ -107,16 +108,36 @@ class painterRepository {
    }
  }
 
- async saveslots(painterid:string,slots:Array<object>){
+ async saveslots(painterId:string,slots:SlotInterface[]){
    try {
 
-      // const { date, startTime, endTime, amount } = slots
-      // const existingSlot = await SlotModel.findOne({ painterid, date, start: startTime, end: endTime });
+      const { date, start, end, amount } = slots[0]
+      console.log(date);
+      console.log(start);
+      console.log(end);
+      console.log(amount);
+      
+      const existingSlot = await SlotModel.findOne({ painterId, date, start: start, end: end });
 
-      // if (existingSlot) {
-      //   return res.status(409).json({ message: 'Slot already exists' });
-      // }
-  
+      if (existingSlot) {
+        return { message: 'Slot already exists' };
+      }
+
+      const newSlot = new SlotModel({
+         date,
+         start: start,
+         end: end,
+         amount, // Add the amount field
+         painterId,
+       });
+   
+       await newSlot.save();
+       
+       return {
+         success:true,
+          message: 'Slot created successfully',
+           slot: newSlot 
+         };
    } catch (error) {
       console.log(error);
       

@@ -244,6 +244,9 @@ class PainterController {
       }
 
       const saveslot = await this.painterUseCase.saveSlots(painterId,slots)
+
+    return res.status(201).json({ message: 'Slot created successfully',});
+
       
     } catch (error) {
       console.log(error);
