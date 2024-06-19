@@ -101,7 +101,20 @@ class painterRepository {
    try {
       const painter = await painterModel.findById(painterid)
 
-      return painter
+      const slot = await SlotModel.find({painterId:painterid})
+      if(!painter){
+         return {
+            success:false,
+            message:'painter not found',
+         }
+      }else{
+         return {
+            success:true,
+            data:painter,slot,
+            message:'painter details fetched successfully',
+         }
+         
+      }
    } catch (error) {
       console.log(error);
       
