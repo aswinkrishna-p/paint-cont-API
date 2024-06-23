@@ -1,14 +1,17 @@
 import express,{ Express,NextFunction,Request,Response } from "express";
 import cors from 'cors'
+import http from "http"
+import cookieParser from "cookie-parser";
+import { socketServer } from "../../services/socket.io";
 
 
 import userRouter from '../routes/userRoutes'
 import adminRouter from '../routes/adminRoutes'
 import painterRouter from '../routes/painterRoutes'
 import postRouter from '../routes/postRoutes'
-import cookieParser from "cookie-parser";
 
 const app : Express = express()
+const server = http.createServer(app)
 
 app.use(express.json()),
 app.use(cookieParser())
@@ -21,6 +24,8 @@ app.use(cors({
     methods:['GET','POST','PUT','PATCH','DELETE'],
     optionsSuccessStatus:204    
 }))
+
+socketServer(server)
 
 // Routes
 app.use('/user',userRouter)
