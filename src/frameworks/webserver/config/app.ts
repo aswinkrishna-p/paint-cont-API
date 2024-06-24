@@ -9,6 +9,7 @@ import userRouter from '../routes/userRoutes'
 import adminRouter from '../routes/adminRoutes'
 import painterRouter from '../routes/painterRoutes'
 import postRouter from '../routes/postRoutes'
+import messageRouter from '../routes/messageRoutes'
 
 const app : Express = express()
 const server = http.createServer(app)
@@ -32,4 +33,5 @@ app.use('/user',userRouter)
 app.use('/admin',adminRouter)
 app.use('/painter',painterRouter)
 app.use('/post',postRouter)
+app.use('/message',messageRouter)
 export default app
