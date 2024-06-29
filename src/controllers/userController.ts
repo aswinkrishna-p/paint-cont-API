@@ -233,6 +233,24 @@ class userController {
       }
     }
 
+
+    async makePayment(req:Req,res:Res){ 
+      try {
+        
+        const {userId,slots} = req.body
+
+        if (!slots || slots.length === 0) {
+          return res.status(400).json({ message: "Slot information is missing" });
+        }
+
+        const payment = await this.userUseCase.slotPayment()
+
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')

@@ -131,6 +131,10 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
+async slotPayment(){
+  
+}
+
 
 }
 
