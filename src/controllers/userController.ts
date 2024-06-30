@@ -236,14 +236,24 @@ class userController {
 
     async makePayment(req:Req,res:Res){ 
       try {
+
+        console.log('hellooooooooooooo');
+        
         
         const {userId,slots} = req.body
+
+        console.log('inside make payment', userId,slots);
+        
 
         if (!slots || slots.length === 0) {
           return res.status(400).json({ message: "Slot information is missing" });
         }
 
-        const payment = await this.userUseCase.slotPayment()
+        const payment = await this.userUseCase.slotPayment(userId,slots)
+
+        if(payment?.success){
+          return res.status(200).json({success:true,data:payment.data})
+        }
 
       } catch (error) {
         console.log(error);

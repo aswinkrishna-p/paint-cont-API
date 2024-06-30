@@ -4,6 +4,7 @@ import { Encrypted } from "../../frameworks/services/hashPassword";
 import jWTService from "../../frameworks/services/jwtService";
 import { Document, ObjectId, Schema, Types } from "mongoose";
 import { Iotp } from "../../entity/otp";
+import { SlotInterface } from "../../entity/slotsEntity";
 
 
 const bcrypt = new Encrypted()
@@ -131,8 +132,23 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
-async slotPayment(){
-  
+async slotPayment(userId:string,slots:SlotInterface[]){
+  try {
+
+    const payment = await this.userRepository.bookslot(userId,slots)
+
+
+    if(payment?.success){
+      return {
+        success:true,
+        data:payment.data
+      }
+    }
+    
+  } catch (error) {
+    console.log(error);
+    
+  }
 }
 
 

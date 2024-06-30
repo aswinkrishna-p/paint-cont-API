@@ -3,6 +3,9 @@ import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
 import { Document, Types } from "mongoose";
 import { Iotp } from "../../../entity/otp";
+import { SlotInterface } from "../../../entity/slotsEntity";
+import SlotModel from "../models/slotsModel";
+import stripe from "../../services/stripe";
 
 class userRepository{
    async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
@@ -93,6 +96,51 @@ class userRepository{
      );
      // console.log(photoSaved);
      return photoSaved;
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async  bookslot(userId:string,slots:SlotInterface[]){
+   try {
+
+      const slotId = slots[0]._id
+
+      const slot = await SlotModel.findById(slotId)
+
+      if (!slot) {
+         return {
+            success:false,
+            message:'Slot not found'
+         }
+       }
+
+       if(slot.amount){
+         const session = await stripe.checkout.sessions.create({
+            line_items: [{
+               price_data: {
+                 currency: 'inr',
+                 product_data: {
+                   name: `Slot booking for ${slot.date}`,
+                 },
+                 unit_amount: slot.amount * 100,
+               },
+               quantity: 1,
+             }],
+             mode: 'payment',
+             success_url:'http://localhost:3000/payment-success',
+             cancel_url:'http://localhost:3000',
+             billing_address_collection: 'required',
+         });
+
+         return {
+            success:true ,
+            data:session.id
+       }
+
+      }
+      
    } catch (error) {
       console.log(error);
       
