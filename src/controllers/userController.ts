@@ -240,16 +240,16 @@ class userController {
         console.log('hellooooooooooooo');
         
         
-        const {userId,slots} = req.body
+        const {userId,slotid} = req.body
 
-        console.log('inside make payment', userId,slots);
+        console.log('inside make payment', userId,slotid);
         
 
-        if (!slots || slots.length === 0) {
+        if (!slotid ) {
           return res.status(400).json({ message: "Slot information is missing" });
         }
 
-        const payment = await this.userUseCase.slotPayment(userId,slots)
+        const payment = await this.userUseCase.slotPayment(userId,slotid)
 
         if(payment?.success){
           return res.status(200).json({success:true,data:payment.data})

@@ -6,6 +6,7 @@ import { Iotp } from "../../../entity/otp";
 import { SlotInterface } from "../../../entity/slotsEntity";
 import SlotModel from "../models/slotsModel";
 import stripe from "../../services/stripe";
+import paymentModel from "../models/paymentModel";
 
 class userRepository{
    async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
@@ -102,10 +103,10 @@ class userRepository{
    }
  }
 
- async  bookslot(userId:string,slots:SlotInterface[]){
+ async  bookslot(userId:string,slotId:string){
    try {
 
-      const slotId = slots[0]._id
+      
 
       const slot = await SlotModel.findById(slotId)
 
@@ -133,6 +134,16 @@ class userRepository{
              cancel_url:'http://localhost:3000',
              billing_address_collection: 'required',
          });
+
+
+         const paymentData = new paymentModel({
+            userId:userId,
+            painterId:slot.painterId,
+            amount:slot.amount,
+            paymentId:session.id
+         })
+
+         await paymentData.save()
 
          return {
             success:true ,

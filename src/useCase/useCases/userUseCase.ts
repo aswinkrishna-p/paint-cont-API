@@ -132,10 +132,10 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
-async slotPayment(userId:string,slots:SlotInterface[]){
+async slotPayment(userId:string,slotId:string){
   try {
 
-    const payment = await this.userRepository.bookslot(userId,slots)
+    const payment = await this.userRepository.bookslot(userId,slotId)
 
 
     if(payment?.success){
