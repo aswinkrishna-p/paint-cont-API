@@ -5,6 +5,7 @@ import jWTService from "../../frameworks/services/jwtService";
 import { Document, ObjectId, Schema, Types } from "mongoose";
 import { Iotp } from "../../entity/otp";
 import { SlotInterface } from "../../entity/slotsEntity";
+import stripeRepository from "../../frameworks/database/repository/stripe_repository";
 
 
 const bcrypt = new Encrypted()
@@ -12,9 +13,14 @@ const JWT = new jWTService()
 
 class Userusecase {
   private userRepository: userRepository;
+  private StripeRepository: stripeRepository
 
-  constructor(userRepository: userRepository) {
+  constructor(
+    userRepository: userRepository ,
+    StripeRepository:stripeRepository
+  ) {
     this.userRepository = userRepository;
+    this.StripeRepository = StripeRepository
   }
 
   async Register(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined ) {
@@ -135,7 +141,7 @@ async  saveuserprofile(userId:string,imageUrl:string){
 async slotPayment(userId:string,slotId:string){
   try {
 
-    const payment = await this.userRepository.bookslot(userId,slotId)
+    const payment = await this.StripeRepository.stripePayment(userId,slotId)
 
 
     if(payment?.success){

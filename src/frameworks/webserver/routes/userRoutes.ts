@@ -4,12 +4,14 @@ import userRepository from '../../database/repository/user-repository'
 import Userusecase from '../../../useCase/useCases/userUseCase'
 import OtpRepository from '../../database/repository/otp-repository'
 import OtpUsecases from '../../../useCase/useCases/OtpUseCase'
+import stripeRepository from '../../database/repository/stripe_repository'
 
 const otpRepository = new OtpRepository()
 const otpusecase = new OtpUsecases(otpRepository)
+const StripeRepository = new stripeRepository()
 
 const repository = new userRepository()
-const useCase = new Userusecase(repository)
+const useCase = new Userusecase(repository,StripeRepository)
 const controller = new userController(useCase,otpusecase)
 
 
