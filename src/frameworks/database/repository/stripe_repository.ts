@@ -61,6 +61,48 @@ class stripeRepository {
            
         }
       }
+
+        //payment success
+  async PaymentSuccess(req: any):Promise<any> {
+    const payload = req.body;
+    const paymentIntentId = payload?.data?.object?.payment_intent
+    const payloadString = JSON.stringify(payload, null, 2);
+    const sig = req.headers["stripe-signature"];
+    if (typeof sig !== "string") {
+      return false;
+    }
+    const endpointSecret =
+      "whsec_1b2137251322a336aeb0b02d725fa444eb458adcb2643d8aadd4215a010c4f82";
+    const header = stripe.webhooks.generateTestHeaderString({
+      payload: payloadString,
+      secret: endpointSecret,
+    });
+
+    let event;
+
+    event = stripe.webhooks.constructEvent(
+      payloadString,
+      header,
+      endpointSecret
+    );
+
+    if (paymentIntentId) {
+      const paymentIntentResponse = await stripe.paymentIntents.retrieve(paymentIntentId);
+      const paymentIntent = paymentIntentResponse
+      if (paymentIntentResponse.latest_charge) {
+        const chargeId = paymentIntentResponse.latest_charge;
+        req.app.locals.chargeId = chargeId;
+      } else {
+        console.log('No latest charge found for this PaymentIntent.');
+        return null;
+      }
+    }
+    if (event.type == "checkout.session.completed") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 

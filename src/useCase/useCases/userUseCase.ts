@@ -157,6 +157,18 @@ async slotPayment(userId:string,slotId:string){
   }
 }
 
+async paymentWebhook(req:any){
+  try {
+    
+    const result = await this.StripeRepository.PaymentSuccess(req)
+
+    return result
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 
 }
 

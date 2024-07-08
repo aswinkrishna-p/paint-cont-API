@@ -261,6 +261,16 @@ class userController {
       }
     }
 
+    async paymentWebHook(req:Req,res:Res){
+      try {
+        
+          const result = await this.userUseCase.paymentWebhook(req)
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')
