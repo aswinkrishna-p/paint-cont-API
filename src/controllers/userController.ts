@@ -249,7 +249,7 @@ class userController {
           return res.status(400).json({ message: "Slot information is missing" });
         }
 
-        const payment = await this.userUseCase.slotPayment(userId,slotid)
+        const payment = await this.userUseCase.slotPayment(req, userId,slotid)
 
         if(payment?.success){
           return res.status(200).json({success:true,data:payment.data})

@@ -6,6 +6,7 @@ import { Document, ObjectId, Schema, Types } from "mongoose";
 import { Iotp } from "../../entity/otp";
 import { SlotInterface } from "../../entity/slotsEntity";
 import stripeRepository from "../../frameworks/database/repository/stripe_repository";
+import { Req } from "../../frameworks/types/serverPackageTypes";
 
 
 const bcrypt = new Encrypted()
@@ -138,10 +139,10 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
-async slotPayment(userId:string,slotId:string){
+async slotPayment(req:Req,userId:string,slotId:string){
   try {
 
-    const payment = await this.StripeRepository.stripePayment(userId,slotId)
+    const payment = await this.StripeRepository.stripePayment( req, userId,slotId)
 
 
     if(payment?.success){
@@ -162,6 +163,8 @@ async paymentWebhook(req:any){
     
     const result = await this.StripeRepository.PaymentSuccess(req)
 
+    console.log(result,'result in usecase');
+    
     return result
   } catch (error) {
     console.log(error);

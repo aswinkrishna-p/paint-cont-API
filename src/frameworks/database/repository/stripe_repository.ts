@@ -1,4 +1,7 @@
 import stripe from "../../services/stripe";
+import { Req } from "../../types/serverPackageTypes";
+import bookingModel from "../models/bookingModel";
+import paymentModel from "../models/paymentModel";
 import SlotModel from "../models/slotsModel";
 
 
@@ -7,13 +10,15 @@ import SlotModel from "../models/slotsModel";
 
 class stripeRepository {
 
-    async  stripePayment(userId:string,slotId:string){
+    async  stripePayment(req:Req, userId:string,slotId:string){
         try {
      
            
      
            const slot = await SlotModel.findById(slotId)
-     
+          
+           console.log(slot,'slot in payment');
+           
            if (!slot) {
               return {
                  success:false,
@@ -39,15 +44,10 @@ class stripeRepository {
                   billing_address_collection: 'required',
               });
      
-     
-            //   const paymentData = new paymentModel({
-            //      userId:userId,
-            //      painterId:slot.painterId,
-            //      amount:slot.amount,
-            //      paymentId:session.id
-            //   })
-     
-            //   await paymentData.save()
+              req.app.locals.sessionId = session.id
+              req.app.locals.Slot = slot
+              req.app.locals.userid = userId
+
      
               return {
                  success:true ,
@@ -64,6 +64,13 @@ class stripeRepository {
 
         //payment success
   async PaymentSuccess(req: any):Promise<any> {
+
+    console.log('inside payment success');
+
+    const slot = req.app.locals.Slot
+    const userId = req.app.locals.userid
+    const sessionId = req.app.locals.sessionId
+    
     const payload = req.body;
     const paymentIntentId = payload?.data?.object?.payment_intent
     const payloadString = JSON.stringify(payload, null, 2);
@@ -97,8 +104,26 @@ class stripeRepository {
         return null;
       }
     }
-    if (event.type == "checkout.session.completed") {
-      return true;
+    if (event.type == "payment_intent.succeeded") {
+      const paymentData = new paymentModel({
+        userId:userId,
+        painterId:slot.painterId,
+        amount:slot.amount,
+        paymentId:sessionId
+     })
+
+     await paymentData.save()
+
+     const slotbooked = await SlotModel.findByIdAndUpdate({_id:slot._id},{$set:{status:"booked"}})
+
+      const newBooking = new bookingModel({
+        date:new Date(),
+        painterId:slot.painterId,
+        userId
+      })
+
+      await newBooking.save()
+      return true
     } else {
       return false;
     }
