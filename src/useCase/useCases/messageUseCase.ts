@@ -19,6 +19,19 @@ async createConversation(senderId:string,receiverId:string){
     try {
         
         const result = await this.ConversationRepository.createConversation(senderId,receiverId)
+
+        if(result){
+            return{
+                success:true,
+                message:result.message,
+                data:result.rsl
+            }
+        }else{
+            return{
+                success:false,
+                message:'error in creating conversation'
+            }
+        }
     } catch (error) {
         console.log(error);
         
