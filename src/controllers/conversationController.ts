@@ -50,6 +50,19 @@ class conversationController {
             }
 
             const result = await this.conversationUseCase.getConversationById(userId)
+
+            if(result){
+                return res.status(200).json({
+                    success:true,
+                    message:result.message,
+                    data:result.data
+                  })
+            }else{
+                return res.status(400).json({
+                    success:false,
+                    message:'error in fetching conversation'
+                  })
+            }
         } catch (error) {
             console.log(error);
             

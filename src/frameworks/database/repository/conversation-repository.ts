@@ -97,6 +97,22 @@ class conversationRepository {
                     })
                 );
 
+                data.sort((a,b)=>{
+                    return (b.messages[b.messages.length-1]?.createdAt || null) - (a.messages[a.messages.length-1]?.createdAt || null)
+                  })
+
+                  if(data){
+                    return{
+                        success:true,
+                        message:'conversation fetched successfully',
+                        rsl:data
+                    }
+                }else{
+                    return{
+                        success:false,
+                        message:'error occured in fetching conversation',
+                    }
+                }
             } catch (error) {
                 console.log(error);
                 

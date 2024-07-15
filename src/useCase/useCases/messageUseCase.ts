@@ -42,6 +42,19 @@ async getConversationById(userId:string){
     try {
         
         const Response = await this.ConversationRepository.getConversationById(userId)
+
+        if(Response){
+            return{
+                success:true,
+                message:Response.message,
+                data:Response.rsl
+            }
+        }else{
+            return{
+                success:false,
+                message:'error in fetching conversation'
+            }
+        }
     } catch (error) {
         console.log(error);
         
