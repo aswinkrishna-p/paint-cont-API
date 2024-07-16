@@ -61,6 +61,29 @@ async getConversationById(userId:string){
     }
 }
 
+async createMessage(conversationId:string,sender:string,text:string){
+    try {
+        
+
+        const Response = await this.MessageRepository.createMessage(conversationId,sender,text)
+
+        if(Response){
+            return{
+                success:true,
+                message:'message saved successfully'
+            }
+        }else{
+            return{
+                success:false,
+                message:'error in saving message'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 
 export default messageUsecase

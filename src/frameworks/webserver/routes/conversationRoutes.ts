@@ -15,7 +15,7 @@ const controller = new conversationController(usecase)
 const router = express.Router()
 
 router.post('/create-conversation',(req ,res) => controller.createConversation(req,res))
-router.get('/get-conversation/:userId',(req ,res) => controller.createConversation(req,res))
+router.get('/get-conversation/:userId',(req ,res) => controller.getConversationByUserId(req,res))
 
 
 

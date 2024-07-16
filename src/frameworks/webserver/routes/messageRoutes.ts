@@ -8,13 +8,13 @@ const conversationrepo = new conversationRepository
 
 const repository = new messageRepository()
 const usecase = new messageUsecase(conversationrepo,repository)
-const controller = new messageController()
+const controller = new messageController(usecase)
 
 
 
 const router = express.Router()
 
-router.post('/message/get-messages',(req ,res) => controller.createMessages(req,res))
+router.post('/message/create-messages',(req ,res) => controller.createMessages(req,res))
 
 
 
