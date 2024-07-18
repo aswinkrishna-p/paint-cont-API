@@ -84,6 +84,53 @@ async createMessage(conversationId:string,sender:string,text:string){
     }
 }
 
+async getMessageByConversationId(conversationId:string){
+    try {
+        
+        const Response = await this.MessageRepository.getMessageByConvId(conversationId)
+
+        if(Response){
+            return{
+                success:true,
+                message:Response.message,
+                data:Response.rsl
+            }
+        }else{
+            return{
+                success:false,
+                message:'error in fetching message'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+} 
+
+
+async getMessages(userId:string ,painterId:string){
+    try {
+        
+
+        const Response = await this.MessageRepository.getMessages(userId,painterId)
+
+        if(Response){
+            return{
+                success:true,
+                data:Response.messageHistory
+            }
+        }else{
+            return{
+                success:false,
+                message:'error in fetching message'
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 }
 
 export default messageUsecase

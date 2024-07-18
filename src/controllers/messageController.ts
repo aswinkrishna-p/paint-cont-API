@@ -12,7 +12,7 @@ class messageController {
 
         async createMessages(req:Req,res:Res){
             try {
-                console.log(req.body);
+                console.log(req.body,'create message');
 
             const {conversationId, sender, text} = req.body
 
@@ -30,6 +30,64 @@ class messageController {
                       })
                 }
                 
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+        async getMessageByConvId(req:Req,res:Res){
+            try {
+                
+                const conversationId = req.params.conversationId
+
+                if(!conversationId){
+                    return res.status(404).json({success:false,message:'missing required fields'})
+                }
+
+                const result = await this.messageUseCase.getMessageByConversationId(conversationId)
+
+                if(result){
+                    return res.status(200).json({
+                        success:true,
+                        message:result.message,
+                        data:result.data
+                      })
+                }else{
+                    return res.status(400).json({
+                        success:false,
+                        message:'error in fetching messages'
+                      })
+                }
+
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+        async getMessages(req:Req,res:Res){
+            try {
+                
+                const {userId,painterId} = req.body
+
+                if(!userId || !painterId){
+                    return res.status(404).json({success:false,message:'missing required fields'})
+                }
+
+                const result = await this.messageUseCase.getMessages(userId,painterId)
+
+                if(result){
+                    return res.status(200).json({
+                        success:true,
+                        data:result.data
+                      })
+                }else{
+                    return res.status(400).json({
+                        success:false,
+                        message:'error in fetching messages'
+                      })
+                }
             } catch (error) {
                 console.log(error);
                 

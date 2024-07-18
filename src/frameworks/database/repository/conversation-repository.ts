@@ -9,6 +9,8 @@ import userModel from "../models/userModel";
 class conversationRepository {
     
     async createConversation (senderId:string,receiverId:string){
+        console.log('inside the create new conv');
+        
         try {
             const conversation = await ConversationModel.find({
                 members:{ $in:[senderId]}

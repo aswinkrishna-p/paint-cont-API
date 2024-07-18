@@ -14,7 +14,9 @@ const controller = new messageController(usecase)
 
 const router = express.Router()
 
-router.post('/message/create-messages',(req ,res) => controller.createMessages(req,res))
+router.post('/create-messages',(req ,res) => controller.createMessages(req,res))
+router.get('/message-by-id/:conversationId',(req ,res) => controller.getMessageByConvId(req,res))
+router.post('/get-messages',(req ,res) => controller.getMessages(req,res))
 
 
 

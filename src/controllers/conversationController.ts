@@ -18,6 +18,8 @@ class conversationController {
 
             const {senderId,receiverId} = req.body
             
+            console.log(req.body,'boddyyyyyyyyyyy');
+            
 
             const result = await this.conversationUseCase.createConversation(senderId,receiverId)
             
