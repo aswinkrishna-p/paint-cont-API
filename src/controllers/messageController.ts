@@ -37,6 +37,9 @@ class messageController {
         }
 
         async getMessageByConvId(req:Req,res:Res){
+
+            console.log('inside the getmessage by conv id');
+            
             try {
                 
                 const conversationId = req.params.conversationId
@@ -70,6 +73,9 @@ class messageController {
             try {
                 
                 const {userId,painterId} = req.body
+
+                console.log('insdie the get message in painter profile');
+                
 
                 if(!userId || !painterId){
                     return res.status(404).json({success:false,message:'missing required fields'})

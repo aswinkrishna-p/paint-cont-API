@@ -8,6 +8,8 @@ class messageRepository {
 
     async createMessage(conversationId:string,sender:string,text:string){
         try {
+            console.log(conversationId,sender,text,'in createmessage repo');
+            
             
             const newMessage = new MessageModel({
                 conversationId:conversationId,
@@ -50,10 +52,13 @@ class messageRepository {
     }
 
     async getMessages(userId:string,painterId:string){
+        console.log( 'inside the getmessage in painter prof repo',userId,painterId);
+        
         try {
             
             const convMembers: {_id:any} | null = await ConversationModel.findOne({ members: { $all: [userId, painterId] } })
-
+            console.log(convMembers,'members in the conve');
+            
             if (!convMembers) {
                 return {
                      success: false,
@@ -64,7 +69,8 @@ class messageRepository {
               const convId: string = convMembers._id.toString();
 
               const messageHistory = await MessageModel.find({ conversationId: convId });
-
+              console.log(messageHistory,'message history');
+              
               if(messageHistory){
                 return{
                     success:true,

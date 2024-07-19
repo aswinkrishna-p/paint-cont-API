@@ -43,6 +43,9 @@ class conversationController {
 
 
     async getConversationByUserId(req:Req, res:Res){
+
+        console.log('inside the get conv by userid');
+        
         try {
             
             const userId = req.params.userId
