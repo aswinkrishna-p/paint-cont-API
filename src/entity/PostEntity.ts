@@ -17,4 +17,5 @@ export interface Ipost{
     time: Date;
     likes: string[];
     reportCount: number;
+    isDelete:boolean;
 }

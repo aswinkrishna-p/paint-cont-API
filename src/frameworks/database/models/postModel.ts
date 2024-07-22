@@ -17,6 +17,7 @@ const PostSchema: Schema = new mongoose.Schema({
   time: { type: Date, default: Date.now },
   likes: [],
   reportCount: [],
+  isDelete:{type:Boolean,default:false},
 });
 
 const PostModel = mongoose.model<Ipost>("Post", PostSchema);

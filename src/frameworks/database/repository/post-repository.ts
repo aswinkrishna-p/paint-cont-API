@@ -137,7 +137,18 @@ class postRepository {
           success: false,
           message: "post not found",
         };
-      } else if (post.reportCount === 1) {
+      }
+      
+      if(post.reportCount >= 10){
+        
+        post.isDelete = true
+        await post.save()
+        return {
+          success:true,
+          message:'Report count reached 10 , post marked for deletion',
+          reportLimitReached: true,
+        }
+      }else if (post.reportCount === 1) {
         return {
           success: true,
           message: "Report count updated successfully",
