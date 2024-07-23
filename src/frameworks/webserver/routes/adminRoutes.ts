@@ -17,6 +17,8 @@ router.post('/adminlogin',(req ,res) => controller.adminLogin(req, res))
 router.post('/logout',(req ,res) => controller.adminLogout(req, res))
 router.get('/allusers',(req,res) => controller.getUsers(req,res))
 router.get('/allpainters',(req,res) => controller.getPainters(req,res))
+router.get('/posts',(req,res) => controller.getDeletePosts(req,res))
+router.delete('/delete-post/:id',(req,res) => controller.DeletePosts(req,res))
 router.patch('/blockuser/:id',(req,res) => controller.blockUser(req,res))
 router.patch('/blockpainter/:id',(req,res) => controller.blockPainter(req,res))
 

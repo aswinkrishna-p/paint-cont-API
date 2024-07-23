@@ -1,5 +1,6 @@
 import AdminModel from "../models/adminModel";
 import painterModel from "../models/painterModel";
+import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
 
 
@@ -98,6 +99,52 @@ class AdminRepository {
                 return{
                     success:false,
                     message:'painter not found'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async fetchDeletePosts(){
+        try {
+            
+            const deletepost = await PostModel.find({isDelete:true})
+
+            if (!deletepost.length){
+                return{
+                    success:false,
+                    message:'no deleted posts found'
+                }
+            }else{
+                return{
+                    success:true,
+                    message:'delete posts fetched successfully',
+                    data:deletepost
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async deletePost(postId:string){
+        try {
+            
+            const deletePost = await PostModel.findByIdAndDelete(postId)
+
+            if(deletePost){
+                return {
+                    success:true,
+                    message:'post deletd successfully',
+                    
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'error in deleting posts'
                 }
             }
         } catch (error) {

@@ -108,5 +108,49 @@ class AdminUseCase {
             
         }
     }
+
+    async  fetchdeletePosts(){
+        try {
+            
+            const posts = await this.adminrepository.fetchDeletePosts()
+
+            if(posts){
+                return{
+                    success:true,
+                    data:posts.data
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'delete posts not found'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async deletePosts(postId:string){
+        try {
+            
+            const deleted = await this.adminrepository.deletePost(postId)
+
+            if(deleted){
+                return{
+                    success:true,
+                    message:deleted.message
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'error in deleting post'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
 export default AdminUseCase

@@ -76,6 +76,8 @@ class conversationRepository {
     }
 
         async getConversationById(userId:string){
+            console.log('insdie the getConversationby id');
+            
             try {
                 const conversation = await ConversationModel.find({
                     members: {$in:[userId]}

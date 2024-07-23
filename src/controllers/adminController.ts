@@ -151,6 +151,58 @@ class AdminController {
             
         }
     }
+
+    async getDeletePosts(req:Req,res:Res){
+        try {
+            
+            const response = await this.AdminUseCase.fetchdeletePosts()
+
+            if(response){
+                return res.status(200).json({
+                    success:true,
+                    data:response.data,
+                    message:response.message
+                })
+            }else{
+                return res.status(400).json({
+                    success:false,
+                    message:" no deleted posts"
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async DeletePosts(req:Req,res:Res){
+        try {
+            
+            const postId = req.params.id
+
+            if(!postId){
+                return res.status(400).json({success:false,message:' post id not found'})
+            }
+
+            const response = await this.AdminUseCase.deletePosts(postId)
+
+            if(response){
+                return res.status(200).json({
+                    success:true,
+                    message:response.message
+                })
+            }else{
+                return res.status(400).json({
+                    success:false,
+                    message:" error in deleting posts"
+                })
+            }
+
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
 }
 
 export default AdminController
