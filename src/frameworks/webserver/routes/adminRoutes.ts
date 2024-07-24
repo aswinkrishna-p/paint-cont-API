@@ -21,5 +21,7 @@ router.get('/posts',(req,res) => controller.getDeletePosts(req,res))
 router.delete('/delete-post/:id',(req,res) => controller.DeletePosts(req,res))
 router.patch('/blockuser/:id',(req,res) => controller.blockUser(req,res))
 router.patch('/blockpainter/:id',(req,res) => controller.blockPainter(req,res))
+router.post('/dashboard',(req,res) => controller.dashBoard(req,res))
+router.post('/graph',(req,res) => controller.getGraphs(req,res))
 
 export default router

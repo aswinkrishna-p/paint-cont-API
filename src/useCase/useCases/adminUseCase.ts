@@ -49,6 +49,32 @@ class AdminUseCase {
 
     }
 
+    async getDashboard(){
+        try {
+            
+            const result = await this.adminrepository.getDashBoard()
+
+            if(result){
+                return{
+                    success:true,
+                    message:result.message,
+                    users:result.users,
+                    painters:result.painters,
+                    blockedPainters:result.blockedPainter,
+                    blockedUsers:result.blockedUsers
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'error in fetching data'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     async Users(){
         try {
             const users = await this.adminrepository.getAllUsers()
@@ -145,6 +171,29 @@ class AdminUseCase {
                 return{
                     success:false,
                     message:'error in deleting post'
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async  fetchGraphs(){
+        try {
+            
+            const result = await this.adminrepository.graphs()
+
+            if(result){
+                return{
+                    success:true,
+                    message:result.message,
+                    posts:result.posts
+                }
+            }else{
+                return{
+                    success:false,
+                    message:'error in fetching posts'
                 }
             }
         } catch (error) {

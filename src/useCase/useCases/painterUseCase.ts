@@ -226,7 +226,10 @@ class PainterUseCase {
           message: " error in updating details",
         };
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 }
 

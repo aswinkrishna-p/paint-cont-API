@@ -17,6 +17,43 @@ class AdminRepository {
             
         }
     }
+
+    async  getDashBoard(){
+        try {
+            
+            const users = await userModel.find()
+            const painters = await painterModel.find()
+
+            const blockedPainter = await painterModel.find({isBlocked:true})
+            const blockedUsers = await userModel.find({isBlocked:true})
+
+            if(!users){
+                return{
+                    success:false,
+                     message:'no users found' 
+                }  
+            }
+
+            if(!painters){
+                return{
+                    success:false,
+                    message:'no painters found'
+                }
+            }
+
+            return{
+                success:true,
+                message:'data fetched successfully',
+                users:users,
+                painters:painters,
+                blockedUsers:blockedUsers,
+                blockedPainter:blockedPainter
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
     
     async getAllUsers() {
         try {
@@ -146,6 +183,37 @@ class AdminRepository {
                     success:false,
                     message:'error in deleting posts'
                 }
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async   graphs(){
+        try {
+            
+            const posts = await PostModel.aggregate([
+                {
+                    $group: {
+                      _id: { $dateToString: { format: "%Y-%m-%d", date: "$time" } },
+                      count: { $sum: 1 },
+                    },
+                  },
+                  { $sort: { _id: 1 } }, 
+            ])
+
+            if(!posts || posts.length === 0){
+                return {
+                    success:false,
+                    message:' There are no posts to fetch'
+                }
+            }
+
+            return {
+                success:true,
+                message:'post fetched successfully',
+                posts:posts
             }
         } catch (error) {
             console.log(error);

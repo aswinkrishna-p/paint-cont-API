@@ -71,6 +71,32 @@ class AdminController {
         }
     }
 
+    async dashBoard(req:Req,res:Res){
+        try {
+            
+            const response = await this.AdminUseCase.getDashboard()
+
+            if(response){
+                res.status(200).json({
+                    success:true,
+                    message:response.message,
+                    users:response.users,
+                    painters:response.painters,
+                    blockedPainters:response.blockedPainters,
+                    blockedUsers:response.blockedUsers
+                })
+            }else{
+                res.status(400).json({
+                    success:false,
+                    message:'error in fetching data'
+                })
+            }
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
     async getUsers (req:Req,res:Res){
         try {
             const users = await this.AdminUseCase.Users()
@@ -198,6 +224,29 @@ class AdminController {
                 })
             }
 
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async getGraphs(req:Req,res:Res){
+        try {
+            
+            const response = await this.AdminUseCase.fetchGraphs()
+
+            if(response){
+                res.status(200).json({
+                    success:true,
+                    message:response.message,
+                    posts:response.posts
+                })
+            }else{
+                res.status(400).json({
+                    success:false,
+                    message:'error in fetching posts'
+                })
+            }
         } catch (error) {
             console.log(error);
             
