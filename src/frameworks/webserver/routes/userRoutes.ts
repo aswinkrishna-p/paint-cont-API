@@ -28,6 +28,7 @@ router.post('/webhook',(req,res ) => controller.paymentWebHook(req,res))
 router.put('/add-address',(req,res ) => controller.add_address(req,res))
 router.patch('/profile-update',(req,res ) => controller.profileupdate(req,res))
 router.post('/search',(req,res ) => controller.searchPainter(req,res))
+router.post('/contact',(req,res ) => controller.contactPage(req,res))
 
 
 

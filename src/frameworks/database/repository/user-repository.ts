@@ -7,6 +7,7 @@ import { SlotInterface } from "../../../entity/slotsEntity";
 import SlotModel from "../models/slotsModel";
 import stripe from "../../services/stripe";
 import paymentModel from "../models/paymentModel";
+import contactModel from "../models/contactusModel";
 
 class userRepository{
    async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
@@ -103,7 +104,29 @@ class userRepository{
    }
  }
 
+async saveContacts(name:string,mail:string,message:string){
+   try {
+      
+      console.log('inside savecontact');
+      
+      const save = await contactModel.create({name,mail,message})
 
+      if(save){
+         return {
+            success:true,
+            message:'data added successfully'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in saving message'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+}
 
 
 

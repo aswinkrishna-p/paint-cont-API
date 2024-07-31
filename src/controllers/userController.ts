@@ -233,6 +233,48 @@ class userController {
       }
     }
 
+    async contactPage(req:Req,res:Res){
+        try {
+          const { name, mail, message } = req.body;
+          console.log('inside contact',req.body);
+          
+
+          if (!name) {
+            return res.status(400).json({ success: false, message: "Name is required" });
+          }
+        
+          if (!mail) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+          }
+        
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(mail)) {
+            return res.status(400).json({ success: false, message: "Invalid email format" });
+          }
+        
+          if (!message) {
+            return res.status(400).json({ success: false, message: "Message is required" });
+          }
+
+          const response = await this.userUseCase.contactMessages(name,mail,message)
+
+          if(response?.success){
+            return res.status(200).json({
+              success:true,
+              message:response.message
+            })
+          }else{
+            return res.status(400).json({
+              success:false,
+              message:response?.message
+            })
+          }
+        } catch (error) {
+          console.log(error);
+          
+        }
+    }
+
 
     async makePayment(req:Req,res:Res){ 
       try {

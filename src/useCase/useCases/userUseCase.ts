@@ -139,6 +139,29 @@ async  saveuserprofile(userId:string,imageUrl:string){
     }
 }
 
+
+async contactMessages(name:string,mail:string,message:string){
+  try {
+    
+    const response = await this.userRepository.saveContacts(name,mail,message)
+
+    if(response?.success){
+      return {
+        success:true,
+        message:response.message
+      }
+    }else{
+      return{
+        success:false,
+        message:response?.message
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 async slotPayment(req:Req,userId:string,slotId:string){
   try {
 
