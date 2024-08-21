@@ -118,6 +118,28 @@ console.log('inside usecaseee');
     }
   }
 
+  async searchForPainter(name:string){
+    try {
+      const result = await this.userRepository.searchPainter(name)
+
+      if(result){
+        return{
+          success:true,
+          message:result.message,
+          data:result.data
+        }
+      }else{
+        return{
+          success:false,
+          message:'painter not found'
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
 async  saveuserprofile(userId:string,imageUrl:string){
     try {
        const photoSaved = await this.userRepository.saveprofilepic(userId,imageUrl)

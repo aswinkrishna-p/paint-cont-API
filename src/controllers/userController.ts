@@ -226,6 +226,21 @@ class userController {
 
     async searchPainter(req:Req ,res:Res){
       try {
+        console.log(req.body,'body in search');
+
+        const {name} = req.body
+
+        if(!name){
+          return res.status(400).json({success: false, message: "username is required"})
+        }
+
+        const painters = await this.userUseCase.searchForPainter(name)
+
+        if(painters){
+          return res.status(200).json({success:true,message:painters.message,data:painters.data})
+        }else{
+          return res.status(400).json({success:false,message:'painter not found'})
+        }
         
       } catch (error) {
         console.log(error);

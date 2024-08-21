@@ -8,6 +8,7 @@ import SlotModel from "../models/slotsModel";
 import stripe from "../../services/stripe";
 import paymentModel from "../models/paymentModel";
 import contactModel from "../models/contactusModel";
+import painterModel from "../models/painterModel";
 
 class userRepository{
    async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
@@ -86,6 +87,32 @@ class userRepository{
    } catch (error) {
       console.log(error);
       
+   }
+ }
+
+ async searchPainter(name:string){
+   try {
+      const painter = await painterModel.find({
+         username:{$regex:name,$options:'i'}
+      })
+
+      console.log(painter,'found the painter');
+
+      if(painter){
+         return{
+            success:true,
+            message:'painter found',
+            data:painter
+         }
+      }else{
+         return{
+            success:false,
+            message:'painter not found',
+         }
+      }
+      
+   } catch (error) {
+      console.log(error);
    }
  }
 
