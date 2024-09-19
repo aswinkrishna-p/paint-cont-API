@@ -35,6 +35,30 @@ class Userusecase {
   
 }
 
+async updatepass(email:string,newpass:string){
+
+  try {
+    const hashpass = await bcrypt.hashpass(newpass)
+
+    const res = await this.userRepository.updatepass(email,hashpass)
+
+    if(res?.success){
+      return{
+        success:true,
+        message:res.message
+      }
+    }else{
+      return{
+        success:false,
+        message:res?.message
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+  }
+
 
   async login(user: Iuser) {
     console.log("inside login");

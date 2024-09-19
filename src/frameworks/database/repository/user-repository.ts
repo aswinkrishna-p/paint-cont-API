@@ -55,6 +55,27 @@ class userRepository{
    }
 }
 
+async updatepass(email:string,newpass:string){
+   try {
+      
+      const update = await userModel.findOneAndUpdate({email:email},{$set:{password:newpass}},{new:true})
+      if(update){
+         return {
+            success:true,
+            message:'password updated'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in updating password'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+}
+
  async addAddress(newUserAddress:any,phoneNo:Number,userId:string){
    try {
       console.log('inside reepoo');
