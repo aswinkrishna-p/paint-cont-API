@@ -88,6 +88,30 @@ class PainterUseCase {
     }
   }
 
+  async updatepass(email:string,newpass:string){
+
+    try {
+      const hashpass = await bcrypt.hashpass(newpass)
+  
+      const res = await this.painterRepository.updatepass(email,hashpass)
+  
+      if(res?.success){
+        return{
+          success:true,
+          message:res.message
+        }
+      }else{
+        return{
+          success:false,
+          message:res?.message
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+    }
+
   async getpainter(painterid: string) {
     try {
       const painter = await this.painterRepository.getpainter(painterid);

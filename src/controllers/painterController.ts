@@ -86,6 +86,35 @@ class PainterController {
       }
     }
 
+    async resendOtpVerification(req:Req,res:Res){
+      try {
+        console.log('inside the otp verification');
+        
+        console.log(typeof req.body.email,'type off ');
+        
+          const email = req.body.email
+          const otp = req.body.otp
+        email.trim()
+        otp.trim()
+        console.log(email ,'email inside verifcation');
+
+        if(!isValidEmail(email)){
+          return res
+          .status(200)
+          .json({ success: false, message: "Invalid email format" });
+        }
+
+        const verify = await this.otpusecase.verifyOTP(email,otp)
+
+        if(verify?.success){
+          return res.status(200).json({success:true,message: verify?.message})
+      }
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async resendOTP(req:Req,res:Res){
       try {
         console.log('inside the resend otp backend');
@@ -115,6 +144,29 @@ class PainterController {
             success: false,
             message: (error as Error)?.message,
         })
+      }
+    }
+
+    async resetPassword(req:Req,res:Res){
+      try {
+         const {email , newpass} = req.body
+
+         if(!email || !newpass){
+        
+          return res.status(400).json({success:false, message:'required fields are missing'})
+        }
+
+        const result = await this.painterUseCase.updatepass(email,newpass)
+       
+        if(result?.success){
+          res.status(200).json({success:true, message:result.message})
+        }else{
+          res.status(400).json({message:'try using another password'})
+        }
+
+      } catch (error) {
+        console.log(error);
+        
       }
     }
 

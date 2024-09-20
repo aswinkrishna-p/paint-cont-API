@@ -58,6 +58,31 @@ class painterRepository {
    }
  }
 
+
+
+ async updatepass(email:string,newpass:string){
+   try {
+      
+      const update = await painterModel.findOneAndUpdate({email:email},{$set:{password:newpass}},{new:true})
+      console.log(update,'updated painter in model');
+      
+      if(update){
+         return {
+            success:true,
+            message:'password updated'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in updating password'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+}
+
  async savePost(painterId:string,description:string,media:string){
    try {
       
