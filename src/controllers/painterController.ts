@@ -185,7 +185,7 @@ class PainterController {
                 .json({ success: false, message: "Invalid email" });
         }
 
-        if ((password = "")) {
+        if ((password == "")) {
             return res
                 .status(200)
                 .json({ success: false, message: "Invalid password" });

@@ -49,9 +49,11 @@ class PainterUseCase {
         }
 
         const validpass = await bcrypt.comparePass(
+          
           painter.password,
           userdata.data.password
         );
+       
 
         userdata.data.password = "";
 
@@ -60,7 +62,7 @@ class PainterUseCase {
             userdata.data._id as string,
             "painter"
           );
-          // console.log(token,'token indakiii');
+          
 
           if (token) {
             return {
