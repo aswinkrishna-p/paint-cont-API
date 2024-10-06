@@ -6,14 +6,6 @@ const slotSchema = new Schema<SlotInterface & Document>({
         type: Date,
         required: true
     },
-    start: {
-        type: String,
-        required: true
-    },
-    end: {
-        type: String,
-        required: true
-    },
     painterId: {
         type: String,
         ref: 'Painter',

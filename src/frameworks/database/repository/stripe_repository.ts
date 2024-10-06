@@ -115,11 +115,12 @@ class stripeRepository {
      await paymentData.save()
 
      const slotbooked = await SlotModel.findByIdAndUpdate({_id:slot._id},{$set:{status:"booked"}})
-
+     const slotId = slot._id
       const newBooking = new bookingModel({
         date:new Date(),
         painterId:slot.painterId,
-        userId
+        userId,
+        slotId
       })
 
       await newBooking.save()

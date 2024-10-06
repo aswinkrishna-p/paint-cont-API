@@ -11,9 +11,15 @@ const bookingSchema = new Schema<BookingInterface & Document>({
         ref: 'Painter',
         required: true
     },
+    slotId: {
+        type: String,
+        ref: 'Slot',
+        required: true
+    },
     userId: {
         type: String,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
 });
 

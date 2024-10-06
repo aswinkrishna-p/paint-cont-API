@@ -306,14 +306,66 @@ class PainterController {
     }
    }
 
+   async editSlots(req:Req,res:Res){
+    try {
+      
+      const date = req.body.date
+      const amount = req.body.amount
+      const {slotId} = req.params
+
+      if(!date || !amount){
+        return res.status(400).json({success:false, message:"missing required fields"})
+      }
+
+      const response = await this.painterUseCase.updateSlots(date,amount ,slotId)
+
+      if(response?.success){
+        res.status(200).json({success:true,message:response?.message})
+
+      }else{
+        return res.status(400).json({success:false,message:response?.message})
+
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
+   async deleteSlots(req:Req,res:Res){
+      try {
+        
+        const {slotId} = req.params
+
+        if(!slotId){
+          return res.status(400).json({success:false, message:"missing required fields"})
+        }
+
+        const response = await this.painterUseCase.removeSlots(slotId)
+
+        
+      if(response?.success){
+        res.status(200).json({success:true,message:response?.message})
+
+      }else{
+        return res.status(400).json({success:false,message:response?.message})
+
+      }
+  
+      } catch (error) {
+        console.log(error);
+        
+      }
+   }
+
    async getPainter(req:Req,res:Res){
     try {
 
       console.log('insdie hereee');
       
-      const id = req.params.painterId
+      const {painterId} = req.params
 
-      const painter = await this.painterUseCase.getpainter(id)
+      const painter = await this.painterUseCase.getpainter(painterId)
       if(painter?.success){
         res.status(200).json({success:true,painter:painter?.data})
 
@@ -322,6 +374,26 @@ class PainterController {
 
       }
       
+    } catch (error) {
+      console.log(error);
+      
+    }
+   }
+
+   async getDashBoard(req:Req,res:Res){
+    try {
+      
+      const {painterId} = req.params
+
+       const result = await this.painterUseCase.fetchDash(painterId)
+
+       if(result?.success){
+        res.status(200).json({success:true, data:result.data, message:result.message})
+
+      }else{
+        return res.status(400).json({success:false, message:result?.message})
+
+      }
     } catch (error) {
       console.log(error);
       

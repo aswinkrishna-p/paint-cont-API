@@ -133,6 +133,29 @@ class PainterUseCase {
     }
   }
 
+  async fetchDash(painterId:string){
+    try {
+      
+      const response = await this.painterRepository.fetchDashBoard(painterId)
+
+      if (response?.success) {
+        return {
+          success: true,
+          data: response.data,
+          message:response.message
+        };
+      }else{
+        return{
+          success:false,
+          message:response?.message
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
   async saveSlots(painterid:string,slot:SlotInterface[]){
     try {
       console.log(slot[0].date,'slotttttttttt');
@@ -145,6 +168,51 @@ class PainterUseCase {
           message:savedata.message
         }
       }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  async updateSlots(date:string,amount:string , slotId:string){
+    try {
+      
+      const updated = await this.painterRepository.editSlots(date,amount,slotId)
+
+      if(updated?.success){
+        return{
+          success:true,
+          message:updated.message
+        }
+      }else{
+        return{
+          success:false,
+          message:updated?.message
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  async removeSlots(slotId:string){
+    try {
+      
+      const result = await this.painterRepository.deleteSlot(slotId)
+
+      if(result?.success){
+        return{
+          success:true,
+          message:result.message
+        }
+      }else{
+        return{
+          success:false,
+          message:result?.message
+        }
+      }
+
     } catch (error) {
       console.log(error);
       

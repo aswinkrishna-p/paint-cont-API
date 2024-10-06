@@ -9,6 +9,7 @@ import stripe from "../../services/stripe";
 import paymentModel from "../models/paymentModel";
 import contactModel from "../models/contactusModel";
 import painterModel from "../models/painterModel";
+import bookingModel from "../models/bookingModel";
 
 class userRepository{
    async saveuser(user:| Iuser  | (Document<unknown, {}, Iotp> & Iotp & { _id: Types.ObjectId }) | undefined){
@@ -168,6 +169,33 @@ async saveContacts(name:string,mail:string,message:string){
          return{
             success:false,
             message:'error in saving message'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+}
+
+async findBookings(userId:string){
+   try {
+      console.log('inside the find booking');
+      
+      const bookings = await bookingModel.find({userId})
+      .populate('painterId', 'username')
+      .populate('slotId' , 'date')
+      .exec()
+
+      if(bookings){
+         return{
+            success:true,
+            data:bookings,
+            message:'booking data fetched successfully'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in fetching bookings'
          }
       }
    } catch (error) {

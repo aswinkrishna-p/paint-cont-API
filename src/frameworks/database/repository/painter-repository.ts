@@ -6,6 +6,7 @@ import PostModel from "../models/postModel";
 import userModel from "../models/userModel";
 import SlotModel from "../models/slotsModel";
 import { SlotInterface } from "../../../entity/slotsEntity";
+import paymentModel from "../models/paymentModel";
 
 
 
@@ -146,16 +147,38 @@ class painterRepository {
    }
  }
 
+ async fetchDashBoard(painterId:string){
+   try {
+      
+      const slot = await SlotModel.find({painterId})
+      const payments = await paymentModel.find({painterId}).populate('userId' , 'username')
+
+      if(slot && payments){
+         return{
+            success:true,
+            data:{slot,payments},
+            message:'dash data fetched successfully'
+         }
+      }else{
+         return{
+            success:false,
+            message:'error in fetching dash data'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
  async saveslots(painterId:string,slots:SlotInterface[]){
    try {
 
-      const { date, start, end, amount } = slots[0]
+      const { date, amount } = slots[0]
       console.log(date);
-      console.log(start);
-      console.log(end);
       console.log(amount);
       
-      const existingSlot = await SlotModel.findOne({ painterId, date, start: start, end: end });
+      const existingSlot = await SlotModel.findOne({ painterId, date,});
 
       if (existingSlot) {
         return { message: 'Slot already exists' };
@@ -163,8 +186,6 @@ class painterRepository {
 
       const newSlot = new SlotModel({
          date,
-         start: start,
-         end: end,
          amount, // Add the amount field
          painterId,
        });
@@ -176,6 +197,50 @@ class painterRepository {
           message: 'Slot created successfully',
            slot: newSlot 
          };
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async editSlots(date:string,amount:string , slotId:string){
+   try {
+      
+      const editslot = await SlotModel.findByIdAndUpdate(slotId,{date,amount},{new:true})
+
+      if(editslot){
+         return{
+            success:true,
+            message:'slot edited successfully'
+         }
+      }else{
+         return{
+            success:false,
+            message:'slot not found'
+         }
+      }
+   } catch (error) {
+      console.log(error);
+      
+   }
+ }
+
+ async deleteSlot(slotId:string){
+   try {
+      
+      const deleted = await SlotModel.findByIdAndDelete(slotId)
+
+      if(deleted){
+         return{
+            success:true,
+            message:'slot deleted successfully'
+         }
+      }else{
+         return{
+            success:false,
+            message:'slot not found'
+         }
+      }
    } catch (error) {
       console.log(error);
       

@@ -381,6 +381,27 @@ class userController {
       }
     }
 
+    async getBookings(req:Req,res:Res){
+      try {
+        
+        const {userId} = req.params
+
+        console.log(userId,'userid in getbooking');
+        
+
+         const response = await this.userUseCase.fetchBookings(userId)
+
+         if(response?.success){
+          return res.status(200).json({success:true,message:response.message,data:response.data})
+        }else{
+          return res.status(400).json({success:false,message:response?.message})
+        }
+      } catch (error) {
+        console.log(error);
+        
+      }
+    }
+
     async logout(req:Req,res:Res){
       try {
         res.clearCookie('user_token')

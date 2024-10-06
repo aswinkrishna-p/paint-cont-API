@@ -241,6 +241,29 @@ async paymentWebhook(req:any){
   }
 }
 
+async fetchBookings(userId:string){
+  try {
+    
+    const result = await this.userRepository.findBookings(userId)
+
+    if(result?.success){
+      return {
+        success:true,
+        data:result.data,
+        message:result.message
+      }
+    }else{
+      return{
+        success:false,
+        message:result?.message
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 
 }
 

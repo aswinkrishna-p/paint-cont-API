@@ -1,5 +1,6 @@
 export interface BookingInterface {
     date?: Date;
     painterId?: string;
-    userId?:string 
+    userId?:string;
+    slotId:string 
 }
